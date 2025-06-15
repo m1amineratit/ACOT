@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ProtectedRoute from './components/layout/ProtectedRoute';
+import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
@@ -22,19 +23,21 @@ const AppRoutes: React.FC = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
-      <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />
+      <Route path="/landing" element={<LandingPage />} />
+      <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
+      <Route path="/signup" element={user ? <Navigate to="/dashboard" replace /> : <SignupPage />} />
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="/success" element={
         <ProtectedRoute>
           <SuccessPage />
         </ProtectedRoute>
       } />
-      <Route path="/" element={
+      <Route path="/dashboard" element={
         <ProtectedRoute>
           <DashboardPage />
         </ProtectedRoute>
       } />
+      <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <LandingPage />} />
     </Routes>
   );
 };
