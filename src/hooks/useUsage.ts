@@ -37,7 +37,7 @@ export const useUsage = () => {
       }
 
       if (!data) {
-        // Create initial usage record
+        // Create initial usage record using upsert to handle race conditions
         const newUsage = {
           user_id: user.id,
           emails_generated: 0,
@@ -46,7 +46,7 @@ export const useUsage = () => {
 
         const { data: createdUsage, error: createError } = await supabase
           .from('user_usage')
-          .insert(newUsage)
+          .upsert(newUsage, { onConflict: 'user_id' })
           .select()
           .single();
 
