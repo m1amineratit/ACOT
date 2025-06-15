@@ -3,6 +3,7 @@ import { Loader, Send, Volume2 } from 'lucide-react';
 import { generateEmails, generateVoiceMessage } from '../utils/api';
 import { useUsage } from '../hooks/useUsage';
 import ResultsSection from './ResultsSection';
+import FollowUpSuggestions from './FollowUpSuggestions';
 import UsageLimitModal from './usage/UsageLimitModal';
 
 interface FormData {
@@ -279,7 +280,12 @@ const EmailForm: React.FC = () => {
             </div>
           </form>
 
-          {results && <ResultsSection results={results} />}
+          {results && (
+            <>
+              <ResultsSection results={results} />
+              <FollowUpSuggestions originalFormData={formData} />
+            </>
+          )}
         </div>
       </section>
 

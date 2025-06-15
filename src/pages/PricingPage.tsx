@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Zap, Crown, Check, X } from 'lucide-react';
 import { stripeProducts } from '../stripe-config';
 import PricingCard from '../components/subscription/PricingCard';
+import Header from '../components/layout/Header';
+import Footer from '../components/Footer';
 
 const PricingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      <Header />
       <div className="relative py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Back button */}
@@ -114,6 +117,7 @@ const PricingPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
