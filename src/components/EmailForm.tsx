@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Loader, Send, Volume2 } from 'lucide-react';
+import { Loader, Send, Volume2, Sparkles, Target, Clock } from 'lucide-react';
 import { generateEmails, generateVoiceMessage } from '../utils/api';
 import { useUsage } from '../hooks/useUsage';
 import ResultsSection from './ResultsSection';
 import FollowUpSuggestions from './FollowUpSuggestions';
 import UsageLimitModal from './usage/UsageLimitModal';
+import EmailTemplates from './features/EmailTemplates';
+import ToneAnalyzer from './features/ToneAnalyzer';
+import EmailPreview from './features/EmailPreview';
 
 interface FormData {
   name: string;
@@ -12,11 +15,17 @@ interface FormData {
   purpose: string;
   tone: string;
   portfolio: string;
+  template?: string;
+  industry?: string;
+  urgency?: string;
 }
 
 interface GeneratedContent {
   coldEmail: string;
   followUp: string;
+  subjectLines?: string[];
+  toneScore?: number;
+  readabilityScore?: number;
 }
 
 const EmailForm: React.FC = () => {
@@ -26,7 +35,10 @@ const EmailForm: React.FC = () => {
     recipient: '',
     purpose: '',
     tone: 'Professional',
-    portfolio: ''
+    portfolio: '',
+    template: '',
+    industry: '',
+    urgency: 'medium'
   });
   
   const [isLoading, setIsLoading] = useState(false);
@@ -34,12 +46,39 @@ const EmailForm: React.FC = () => {
   const [results, setResults] = useState<GeneratedContent | null>(null);
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [showUsageLimitModal, setShowUsageLimitModal] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   const toneOptions = [
-    { value: 'Friendly', label: 'Friendly' },
-    { value: 'Professional', label: 'Professional' },
-    { value: 'Funny', label: 'Funny' },
-    { value: 'Confident', label: 'Confident' }
+    { value: 'Friendly', label: 'Friendly', description: 'Warm and approachable' },
+    { value: 'Professional', label: 'Professional', description: 'Formal and business-like' },
+    { value: 'Funny', label: 'Funny', description: 'Light-hearted and humorous' },
+    { value: 'Confident', label: 'Confident', description: 'Assertive and direct' },
+    ...(isPremium ? [
+      { value: 'Persuasive', label: 'Persuasive', description: 'Compelling and convincing' },
+      { value: 'Empathetic', label: 'Empathetic', description: 'Understanding and caring' },
+      { value: 'Authoritative', label: 'Authoritative', description: 'Expert and knowledgeable' }
+    ] : [])
+  ];
+
+  const industryOptions = [
+    { value: '', label: 'Select Industry (Optional)' },
+    { value: 'technology', label: 'Technology' },
+    { value: 'healthcare', label: 'Healthcare' },
+    { value: 'finance', label: 'Finance' },
+    { value: 'education', label: 'Education' },
+    { value: 'retail', label: 'Retail' },
+    { value: 'manufacturing', label: 'Manufacturing' },
+    { value: 'consulting', label: 'Consulting' },
+    { value: 'marketing', label: 'Marketing' },
+    { value: 'real-estate', label: 'Real Estate' },
+    { value: 'other', label: 'Other' }
+  ];
+
+  const urgencyOptions = [
+    { value: 'low', label: 'Low Priority', description: 'No rush, flexible timing' },
+    { value: 'medium', label: 'Medium Priority', description: 'Standard business timing' },
+    { value: 'high', label: 'High Priority', description: 'Time-sensitive opportunity' }
   ];
 
   const validateForm = (): boolean => {
@@ -63,6 +102,11 @@ const EmailForm: React.FC = () => {
     }
   };
 
+  const handleTemplateSelect = (template: string) => {
+    setFormData(prev => ({ ...prev, template }));
+    setShowTemplates(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -76,7 +120,7 @@ const EmailForm: React.FC = () => {
     
     setIsLoading(true);
     try {
-      const generated = await generateEmails(formData);
+      const generated = await generateEmails(formData, isPremium);
       
       // Increment usage count
       const success = await incrementEmailUsage();
@@ -140,6 +184,40 @@ const EmailForm: React.FC = () => {
               </div>
             )}
 
+            {/* Premium Features Banner */}
+            {isPremium && (
+              <div className="mb-6 p-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-lg">
+                <div className="flex items-center">
+                  <Sparkles className="w-5 h-5 text-yellow-400 mr-2" />
+                  <p className="text-purple-300 font-medium">
+                    Premium features active: Advanced tones, industry templates, analytics & more!
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Template Selector */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-medium text-gray-200">
+                  Email Templates {!isPremium && <span className="text-xs text-gray-400">(Limited in free version)</span>}
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowTemplates(true)}
+                  className="flex items-center px-3 py-1 bg-purple-600/20 text-purple-300 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+                >
+                  <Target className="w-4 h-4 mr-1" />
+                  Browse Templates
+                </button>
+              </div>
+              {formData.template && (
+                <div className="p-3 bg-green-500/20 border border-green-500/30 rounded-lg">
+                  <p className="text-green-300 text-sm">Template selected: {formData.template}</p>
+                </div>
+              )}
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-2">
@@ -196,10 +274,10 @@ const EmailForm: React.FC = () => {
               {errors.purpose && <p className="text-red-400 text-sm mt-1">{errors.purpose}</p>}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
                 <label htmlFor="tone" className="block text-sm font-medium text-gray-200 mb-2">
-                  Tone
+                  Tone {isPremium && <span className="text-xs text-purple-300">(Premium: 7 options)</span>}
                 </label>
                 <select
                   id="tone"
@@ -210,12 +288,33 @@ const EmailForm: React.FC = () => {
                 >
                   {toneOptions.map((option) => (
                     <option key={option.value} value={option.value} className="bg-gray-800">
-                      {option.label}
+                      {option.label} - {option.description}
                     </option>
                   ))}
                 </select>
               </div>
 
+              <div>
+                <label htmlFor="industry" className="block text-sm font-medium text-gray-200 mb-2">
+                  Industry {isPremium && <span className="text-xs text-purple-300">(Premium: Better targeting)</span>}
+                </label>
+                <select
+                  id="industry"
+                  name="industry"
+                  value={formData.industry}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                >
+                  {industryOptions.map((option) => (
+                    <option key={option.value} value={option.value} className="bg-gray-800">
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div>
                 <label htmlFor="portfolio" className="block text-sm font-medium text-gray-200 mb-2">
                   Your Portfolio or Website
@@ -230,6 +329,25 @@ const EmailForm: React.FC = () => {
                   className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                   placeholder="https://yourwebsite.com"
                 />
+              </div>
+
+              <div>
+                <label htmlFor="urgency" className="block text-sm font-medium text-gray-200 mb-2">
+                  Priority Level {isPremium && <span className="text-xs text-purple-300">(Premium: Affects tone)</span>}
+                </label>
+                <select
+                  id="urgency"
+                  name="urgency"
+                  value={formData.urgency}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                >
+                  {urgencyOptions.map((option) => (
+                    <option key={option.value} value={option.value} className="bg-gray-800">
+                      {option.label} - {option.description}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -257,12 +375,24 @@ const EmailForm: React.FC = () => {
                 )}
               </button>
 
+              {isPremium && (
+                <button
+                  type="button"
+                  onClick={() => setShowPreview(true)}
+                  disabled={!formData.name || !formData.recipient || !formData.purpose}
+                  className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                >
+                  <Clock className="w-5 h-5 mr-2" />
+                  Preview
+                </button>
+              )}
+
               {results && (
                 <button
                   type="button"
                   onClick={handleGenerateVoice}
                   disabled={isGeneratingVoice}
-                  className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white font-semibold rounded-lg hover:from-orange-700 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   {isGeneratingVoice ? (
                     <>
@@ -272,7 +402,7 @@ const EmailForm: React.FC = () => {
                   ) : (
                     <>
                       <Volume2 className="w-5 h-5 mr-2" />
-                      Generate Voice Message
+                      {isPremium ? 'Generate Voice Message' : 'Voice (Premium)'}
                     </>
                   )}
                 </button>
@@ -282,12 +412,28 @@ const EmailForm: React.FC = () => {
 
           {results && (
             <>
-              <ResultsSection results={results} />
+              <ResultsSection results={results} isPremium={isPremium} />
+              {isPremium && <ToneAnalyzer email={results.coldEmail} />}
               <FollowUpSuggestions originalFormData={formData} />
             </>
           )}
         </div>
       </section>
+
+      <EmailTemplates
+        isOpen={showTemplates}
+        onClose={() => setShowTemplates(false)}
+        onSelect={handleTemplateSelect}
+        isPremium={isPremium}
+      />
+
+      {isPremium && (
+        <EmailPreview
+          isOpen={showPreview}
+          onClose={() => setShowPreview(false)}
+          formData={formData}
+        />
+      )}
 
       <UsageLimitModal
         isOpen={showUsageLimitModal}
