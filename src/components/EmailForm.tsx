@@ -3,9 +3,8 @@ import { Loader, Send, Volume2, Sparkles, Target, Clock } from 'lucide-react';
 import { generateEmails, generateVoiceMessage } from '../utils/api';
 import { useUsage } from '../hooks/useUsage';
 import ResultsSection from './ResultsSection';
-import FollowUpSuggestions from './FollowUpSuggestions';
+import AIFollowUpSuggestions from './AIFollowUpSuggestions';
 import UsageLimitModal from './usage/UsageLimitModal';
-import EmailTemplates from './features/EmailTemplates';
 import ToneAnalyzer from './features/ToneAnalyzer';
 import EmailPreview from './features/EmailPreview';
 
@@ -15,7 +14,6 @@ interface FormData {
   purpose: string;
   tone: string;
   portfolio: string;
-  template?: string;
   industry?: string;
   urgency?: string;
 }
@@ -36,7 +34,6 @@ const EmailForm: React.FC = () => {
     purpose: '',
     tone: 'Professional',
     portfolio: '',
-    template: '',
     industry: '',
     urgency: 'medium'
   });
@@ -46,7 +43,6 @@ const EmailForm: React.FC = () => {
   const [results, setResults] = useState<GeneratedContent | null>(null);
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [showUsageLimitModal, setShowUsageLimitModal] = useState(false);
-  const [showTemplates, setShowTemplates] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
 
   const toneOptions = [
@@ -100,11 +96,6 @@ const EmailForm: React.FC = () => {
     if (errors[name as keyof FormData]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
-  };
-
-  const handleTemplateSelect = (template: string) => {
-    setFormData(prev => ({ ...prev, template }));
-    setShowTemplates(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -190,33 +181,11 @@ const EmailForm: React.FC = () => {
                 <div className="flex items-center">
                   <Sparkles className="w-5 h-5 text-yellow-400 mr-2" />
                   <p className="text-purple-300 font-medium">
-                    Premium features active: Advanced tones, industry templates, analytics & more!
+                    Premium AI features active: Advanced tones, industry insights, analytics & more!
                   </p>
                 </div>
               </div>
             )}
-
-            {/* Template Selector */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-3">
-                <label className="block text-sm font-medium text-gray-200">
-                  Email Templates {!isPremium && <span className="text-xs text-gray-400">(Limited in free version)</span>}
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setShowTemplates(true)}
-                  className="flex items-center px-3 py-1 bg-purple-600/20 text-purple-300 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
-                >
-                  <Target className="w-4 h-4 mr-1" />
-                  Browse Templates
-                </button>
-              </div>
-              {formData.template && (
-                <div className="p-3 bg-green-500/20 border border-green-500/30 rounded-lg">
-                  <p className="text-green-300 text-sm">Template selected: {formData.template}</p>
-                </div>
-              )}
-            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
@@ -360,12 +329,12 @@ const EmailForm: React.FC = () => {
                 {isLoading ? (
                   <>
                     <Loader className="w-5 h-5 mr-2 animate-spin" />
-                    Generating...
+                    AI Generating...
                   </>
                 ) : (
                   <>
                     <Send className="w-5 h-5 mr-2" />
-                    Generate Email
+                    Generate with AI
                     {!isPremium && remainingEmails !== null && (
                       <span className="ml-2 text-sm opacity-75">
                         ({remainingEmails} left)
@@ -383,7 +352,7 @@ const EmailForm: React.FC = () => {
                   className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   <Clock className="w-5 h-5 mr-2" />
-                  Preview
+                  AI Preview
                 </button>
               )}
 
@@ -414,18 +383,11 @@ const EmailForm: React.FC = () => {
             <>
               <ResultsSection results={results} isPremium={isPremium} />
               {isPremium && <ToneAnalyzer email={results.coldEmail} />}
-              <FollowUpSuggestions originalFormData={formData} />
+              <AIFollowUpSuggestions originalFormData={formData} />
             </>
           )}
         </div>
       </section>
-
-      <EmailTemplates
-        isOpen={showTemplates}
-        onClose={() => setShowTemplates(false)}
-        onSelect={handleTemplateSelect}
-        isPremium={isPremium}
-      />
 
       {isPremium && (
         <EmailPreview

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Eye, Clock, User, Mail, Target } from 'lucide-react';
+import { X, Eye, Clock, User, Mail, Target, Loader, Sparkles } from 'lucide-react';
 
 interface EmailPreviewProps {
   isOpen: boolean;
@@ -21,95 +21,133 @@ const EmailPreview: React.FC<EmailPreviewProps> = ({ isOpen, onClose, formData }
 
   useEffect(() => {
     if (isOpen && formData.name && formData.recipient && formData.purpose) {
-      generatePreview();
+      generateAIPreview();
     }
   }, [isOpen, formData]);
 
-  const generatePreview = async () => {
+  const generateAIPreview = async () => {
     setIsGenerating(true);
     
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Generate a quick preview based on form data
-    const recipientName = formData.recipient.split(',')[0].replace(/^(Mr\.|Ms\.|Dr\.)?\s*/, '');
-    const preview = `Subject: ${getSubjectLine()}
+    try {
+      const prompt = `Generate a quick preview of a cold outreach email with these details:
+
+**Details:**
+- Sender: ${formData.name}
+- Recipient: ${formData.recipient}
+- Purpose: ${formData.purpose}
+- Tone: ${formData.tone}
+- Industry: ${formData.industry || 'Not specified'}
+- Urgency: ${formData.urgency || 'medium'}
+- Portfolio: ${formData.portfolio || 'Not provided'}
+
+**Requirements:**
+- Generate a concise preview (not the full email)
+- Show the subject line and first 2-3 paragraphs
+- Match the ${formData.tone} tone
+- Make it personalized and engaging
+- Include a clear value proposition
+
+Format as:
+Subject: [subject line]
+
+[Email preview content...]`;
+
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': window.location.origin,
+          'X-Title': 'AI Cold Outreach Tool'
+        },
+        body: JSON.stringify({
+          model: 'anthropic/claude-3.5-sonnet',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an expert at writing compelling cold outreach emails. Generate engaging previews that capture attention and show value.'
+            },
+            {
+              role: 'user',
+              content: prompt
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 800
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate preview');
+      }
+
+      const data = await response.json();
+      const content = data.choices[0]?.message?.content;
+
+      if (content) {
+        setPreviewEmail(content);
+      } else {
+        throw new Error('No content generated');
+      }
+    } catch (error) {
+      console.error('Error generating AI preview:', error);
+      // Fallback preview
+      const recipientName = formData.recipient.split(',')[0].replace(/^(Mr\.|Ms\.|Dr\.)?\s*/, '');
+      const fallbackPreview = `Subject: ${getFallbackSubject()}
 
 Hi ${recipientName},
 
-${getOpeningLine()} I hope this email finds you well.
+${getFallbackOpening()} I hope this email finds you well.
 
 My name is ${formData.name}, and I'm reaching out because ${formData.purpose.toLowerCase()}.
 
-${getToneSpecificContent()}
+${getFallbackContent()}
 
-${formData.portfolio ? `I'd love for you to check out my work at ${formData.portfolio} to get a better sense of what I can bring to the table.` : ''}
-
-I understand you're probably busy, but I'd be grateful for just a few minutes of your time to discuss this opportunity. Would you be available for a brief call this week?
-
-${getClosing()}
+I'd love to discuss this opportunity with you. Would you be available for a brief call this week?
 
 Best regards,
 ${formData.name}`;
-
-    setPreviewEmail(preview);
-    setIsGenerating(false);
-  };
-
-  const getSubjectLine = () => {
-    const urgencyMap = {
-      high: 'Urgent: ',
-      medium: '',
-      low: 'When convenient: '
-    };
-    const prefix = urgencyMap[formData.urgency as keyof typeof urgencyMap] || '';
-    
-    if (formData.purpose.toLowerCase().includes('job')) {
-      return `${prefix}Opportunity to Connect - Potential Collaboration`;
-    } else if (formData.purpose.toLowerCase().includes('partnership')) {
-      return `${prefix}Partnership Opportunity`;
+      
+      setPreviewEmail(fallbackPreview);
+    } finally {
+      setIsGenerating(false);
     }
-    return `${prefix}Introduction and Potential Opportunity`;
   };
 
-  const getOpeningLine = () => {
+  const getFallbackSubject = () => {
+    if (formData.purpose.toLowerCase().includes('partnership')) {
+      return 'Partnership Opportunity';
+    } else if (formData.purpose.toLowerCase().includes('job')) {
+      return 'Opportunity to Connect';
+    }
+    return 'Introduction and Potential Opportunity';
+  };
+
+  const getFallbackOpening = () => {
     switch (formData.tone) {
       case 'Friendly':
         return 'Hope you\'re having a great day!';
       case 'Funny':
-        return 'I promise this isn\'t another generic sales email (plot twist: it kind of is, but in a good way)!';
+        return 'I promise this isn\'t another generic sales email!';
       case 'Confident':
-        return 'I\'m writing to you because I believe we could create something amazing together.';
+        return 'I\'m writing because I believe we could create something amazing together.';
       default:
         return '';
     }
   };
 
-  const getToneSpecificContent = () => {
-    const baseContent = `I believe there's a great opportunity for us to work together, and I'd love to explore how we can make that happen.`;
+  const getFallbackContent = () => {
+    const baseContent = 'I believe there\'s a great opportunity for us to work together.';
     
     switch (formData.tone) {
       case 'Friendly':
-        return `${baseContent} I'm really excited about the possibility of collaborating and think we could accomplish some wonderful things together.`;
+        return `${baseContent} I\'m excited about the possibility of collaborating!`;
       case 'Funny':
-        return `${baseContent} I know, I know - another person sliding into your inbox. But hear me out, I think this could be the start of something pretty cool.`;
+        return `${baseContent} I know, another person in your inbox, but this could be the start of something cool!`;
       case 'Confident':
-        return `${baseContent} I have a track record of delivering exceptional results, and I'm confident that my skills would be valuable to your organization.`;
+        return `${baseContent} I have a track record of delivering results and I\'m confident this would be valuable.`;
       default:
         return baseContent;
-    }
-  };
-
-  const getClosing = () => {
-    switch (formData.tone) {
-      case 'Friendly':
-        return 'Looking forward to hopefully connecting soon!';
-      case 'Funny':
-        return 'Thanks for reading this far - you\'re already awesome in my book!';
-      case 'Confident':
-        return 'I\'m confident this conversation will be worth both our time.';
-      default:
-        return 'Thank you for considering this opportunity.';
     }
   };
 
@@ -121,10 +159,10 @@ ${formData.name}`;
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/20">
           <div className="flex items-center">
-            <Eye className="w-6 h-6 text-purple-400 mr-3" />
+            <Sparkles className="w-6 h-6 text-purple-400 mr-3" />
             <div>
-              <h2 className="text-2xl font-bold text-white">Email Preview</h2>
-              <p className="text-gray-300 text-sm">Quick preview based on your inputs</p>
+              <h2 className="text-2xl font-bold text-white">AI Email Preview</h2>
+              <p className="text-gray-300 text-sm">Quick AI-generated preview of your email</p>
             </div>
           </div>
           <button
@@ -175,15 +213,21 @@ ${formData.name}`;
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-                <p className="text-gray-300">Generating preview...</p>
+                <p className="text-gray-300">AI generating preview...</p>
               </div>
             </div>
           ) : (
             <div className="bg-gray-900/50 rounded-lg p-6 border border-gray-700">
               <div className="mb-4 pb-4 border-b border-gray-600">
-                <div className="text-sm text-gray-400 mb-2">Email Preview</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-400 mb-2">AI Email Preview</div>
+                  <div className="flex items-center px-2 py-1 bg-purple-500/20 rounded-full">
+                    <Sparkles className="w-3 h-3 text-purple-400 mr-1" />
+                    <span className="text-purple-300 text-xs font-medium">AI Generated</span>
+                  </div>
+                </div>
                 <div className="text-xs text-gray-500">
-                  This is a quick preview. The final generated email will be more polished and personalized.
+                  This is a quick AI preview. The final generated email will be more detailed and polished.
                 </div>
               </div>
               <pre className="text-gray-200 whitespace-pre-wrap text-sm leading-relaxed font-sans">
@@ -197,7 +241,7 @@ ${formData.name}`;
         <div className="p-6 border-t border-white/20 bg-white/5">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-400">
-              This preview helps you see how your email will look before generating the final version.
+              This AI preview helps you see how your email will look before generating the final version.
             </div>
             <button
               onClick={onClose}
