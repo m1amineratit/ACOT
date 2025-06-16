@@ -520,7 +520,7 @@ const LandingPage: React.FC = () => {
 
               <div className="mt-4 text-center">
                 <p className="text-green-400 text-sm font-medium">
-                  🎉 Save $36+ vs monthly plan annually
+                  🎉 Save $1080+ vs monthly plan over 30 years
                 </p>
               </div>
             </div>

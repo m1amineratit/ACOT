@@ -48,7 +48,7 @@ export const stripeProducts: StripeProduct[] = [
       'Early access to new features',
       'Custom integrations',
       'White-label options',
-      'Save $36+ vs monthly plan annually'
+      'Save $1080+ vs monthly plan over 30 years'
     ]
   }
 ];
