@@ -205,9 +205,10 @@ export const getEmailStats = async (): Promise<{
       return acc;
     }, {} as Record<string, number>);
 
-    const topTone = Object.entries(toneCount).reduce((a, b) => 
-      toneCount[a[0]] > toneCount[b[0]] ? a : b
-    )?.[0] || 'Professional';
+    const toneEntries = Object.entries(toneCount);
+    const topTone = toneEntries.length > 0 
+      ? toneEntries.reduce((a, b) => toneCount[a[0]] > toneCount[b[0]] ? a : b)[0]
+      : 'Professional';
 
     return {
       totalEmails,
