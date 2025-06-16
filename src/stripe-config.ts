@@ -32,7 +32,7 @@ export const stripeProducts: StripeProduct[] = [
   },
   {
     id: 'prod_lifetime_access',
-    priceId: 'price_1RYELMRxebcXidgtXXXXXXXX', // Replace with your actual Stripe price ID for lifetime access
+    priceId: 'price_1RaQWNRxebcXidgt3tuCh0Up', // Replace with your actual Stripe price ID for lifetime access
     name: 'Lifetime Access',
     description: 'One-time payment for lifetime access to all premium features.',
     mode: 'payment',
