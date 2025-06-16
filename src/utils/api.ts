@@ -1,6 +1,8 @@
 // Mock API functions for demonstration purposes
 // In a real application, these would make actual API calls
 
+import { createEmailHistory } from '../services/emailHistory';
+
 interface FormData {
   name: string;
   recipient: string;
@@ -68,6 +70,31 @@ ${name}`;
     result.subjectLines = generateSubjectLines(purpose, tone, urgency);
     result.toneScore = Math.floor(Math.random() * 20) + 80; // 80-100%
     result.readabilityScore = Math.floor(Math.random() * 15) + 85; // 85-100%
+  }
+
+  // Save to database
+  try {
+    const recipientParts = recipient.split(',');
+    const recipientName = recipientParts[0].trim();
+    const recipientCompany = recipientParts[1]?.trim();
+
+    await createEmailHistory({
+      recipient_name: recipientName,
+      recipient_company: recipientCompany,
+      purpose,
+      tone,
+      industry,
+      urgency: urgency || 'medium',
+      template_used: formData.template,
+      cold_email_content: coldEmail,
+      follow_up_content: followUp,
+      subject_lines: result.subjectLines,
+      tone_score: result.toneScore,
+      readability_score: result.readabilityScore
+    });
+  } catch (error) {
+    console.error('Failed to save email history:', error);
+    // Don't fail the generation if saving fails
   }
 
   return result;

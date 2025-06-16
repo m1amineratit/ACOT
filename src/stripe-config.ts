@@ -11,8 +11,8 @@ export interface StripeProduct {
 
 export const stripeProducts: StripeProduct[] = [
   {
-    id: 'prod_STAfWMRBS8PKKc',
-    priceId: 'price_1RYEKYRxebcXidgt16XSFQ9J',
+    id: 'prod_premium_monthly',
+    priceId: 'price_1234567890abcdef', // Replace with your actual Stripe price ID
     name: 'Premium Monthly',
     description: 'Unlimited access to all features with advanced AI capabilities.',
     mode: 'subscription',
@@ -32,7 +32,7 @@ export const stripeProducts: StripeProduct[] = [
   },
   {
     id: 'prod_lifetime',
-    priceId: 'price_lifetime',
+    priceId: 'price_lifetime_access', // Replace with your actual Stripe price ID
     name: 'Lifetime Access',
     description: 'One-time payment for lifetime access to all premium features.',
     mode: 'payment',
