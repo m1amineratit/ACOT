@@ -23,6 +23,13 @@ export const generateEmails = async (formData: FormData, isPremium: boolean = fa
   const { name, recipient, purpose, tone, portfolio, industry, urgency } = formData;
   
   try {
+    // Check if API key is available
+    const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+    if (!apiKey) {
+      console.warn('OpenRouter API key not found, falling back to mock generation');
+      return generateMockEmails(formData, isPremium);
+    }
+
     // Create the prompt for AI generation
     const prompt = createEmailPrompt(formData, isPremium);
     
@@ -30,7 +37,7 @@ export const generateEmails = async (formData: FormData, isPremium: boolean = fa
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY || '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'}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         'HTTP-Referer': window.location.origin,
         'X-Title': 'AI Cold Outreach Tool'
