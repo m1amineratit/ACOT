@@ -70,7 +70,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ product, isPopular = false })
         {isLifetime && (
           <div className="mt-2">
             <span className="text-green-400 text-sm font-medium">
-              Save $120+ vs monthly plan
+              Save $36+ vs monthly plan annually
             </span>
           </div>
         )}

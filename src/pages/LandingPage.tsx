@@ -432,7 +432,7 @@ const LandingPage: React.FC = () => {
 
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-white mb-2">Premium</h3>
-                <div className="text-4xl font-bold text-white mb-4">$9.99<span className="text-lg">/month</span></div>
+                <div className="text-4xl font-bold text-white mb-4">$3.00<span className="text-lg">/month</span></div>
                 <p className="text-gray-300">For serious professionals</p>
               </div>
               
@@ -520,7 +520,7 @@ const LandingPage: React.FC = () => {
 
               <div className="mt-4 text-center">
                 <p className="text-green-400 text-sm font-medium">
-                  🎉 Save $120+ vs monthly plan
+                  🎉 Save $36+ vs monthly plan annually
                 </p>
               </div>
             </div>

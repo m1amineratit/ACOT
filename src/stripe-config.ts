@@ -11,12 +11,12 @@ export interface StripeProduct {
 
 export const stripeProducts: StripeProduct[] = [
   {
-    id: 'prod_premium_monthly',
-    priceId: 'price_1RYEKYRxebcXidgt16XSFQ9J', // Replace with your actual Stripe price ID for monthly subscription
-    name: 'Premium Monthly',
-    description: 'Unlimited access to all features with advanced AI capabilities.',
+    id: 'prod_STAfWMRBS8PKKc',
+    priceId: 'price_1RYEKYRxebcXidgt16XSFQ9J',
+    name: 'Premium',
+    description: 'Unlimited emails, 6+ tones, schedule follow-ups, save email templates',
     mode: 'subscription',
-    price: 9.99,
+    price: 3.00,
     currency: 'usd',
     features: [
       'Unlimited email generation',
@@ -27,26 +27,28 @@ export const stripeProducts: StripeProduct[] = [
       'Email history & export',
       'Priority support',
       'A/B testing for subject lines',
-      'Response rate tracking'
+      'Response rate tracking',
+      'Schedule follow-ups',
+      'Save email templates'
     ]
   },
   {
-    id: 'prod_lifetime_access',
-    priceId: 'price_1RaQWNRxebcXidgt3tuCh0Up', // Replace with your actual Stripe price ID for lifetime access
+    id: 'prod_SVRPboKeHi9Xlj',
+    priceId: 'price_1RaQWNRxebcXidgt3tuCh0Up',
     name: 'Lifetime Access',
     description: 'One-time payment for lifetime access to all premium features.',
     mode: 'payment',
     price: 99.99,
     currency: 'usd',
     features: [
-      'Everything in Premium Monthly',
+      'Everything in Premium',
       'Lifetime access - no recurring fees',
       'Future feature updates included',
       'VIP support',
       'Early access to new features',
       'Custom integrations',
       'White-label options',
-      'Save $120+ vs monthly plan'
+      'Save $36+ vs monthly plan annually'
     ]
   }
 ];

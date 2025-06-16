@@ -25,7 +25,9 @@ const PricingPage: React.FC = () => {
     'A/B testing for subject lines',
     'Response rate tracking',
     'Priority support',
-    'Voice message generation'
+    'Voice message generation',
+    'Schedule follow-ups',
+    'Save email templates'
   ];
 
   return (
@@ -138,7 +140,7 @@ const PricingPage: React.FC = () => {
                   </div>
                   
                   <div className="mt-8 p-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 rounded-lg">
-                    <div className="text-3xl font-bold text-white mb-2">$9.99</div>
+                    <div className="text-3xl font-bold text-white mb-2">$3.00</div>
                     <div className="text-purple-300">per month</div>
                   </div>
                 </div>
@@ -152,7 +154,7 @@ const PricingPage: React.FC = () => {
               <PricingCard
                 key={product.id}
                 product={product}
-                isPopular={index === 0} // Make first product popular
+                isPopular={product.mode === 'subscription'} // Make subscription popular
               />
             ))}
           </div>
