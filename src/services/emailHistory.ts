@@ -39,10 +39,19 @@ export interface CreateEmailHistoryData {
 
 export const createEmailHistory = async (data: CreateEmailHistoryData): Promise<EmailHistoryRecord | null> => {
   try {
+    // Get the current authenticated user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    
+    if (userError || !user) {
+      console.error('Error getting authenticated user:', userError);
+      return null;
+    }
+
     const { data: result, error } = await supabase
       .from('email_history')
       .insert({
         ...data,
+        user_id: user.id, // Ensure user_id is set for RLS policy
         subject_lines: data.subject_lines || []
       })
       .select()
