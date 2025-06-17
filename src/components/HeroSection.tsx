@@ -16,7 +16,7 @@ const HeroSection: React.FC = () => {
         <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
           AI Cold Outreach
           <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent block">
-            100% Free Forever
+            100% Free 
           </span>
         </h1>
         
