@@ -6,8 +6,6 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
-import PricingPage from './pages/PricingPage';
-import SuccessPage from './pages/SuccessPage';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 
 const AppRoutes: React.FC = () => {
@@ -26,12 +24,6 @@ const AppRoutes: React.FC = () => {
       <Route path="/landing" element={<LandingPage />} />
       <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
       <Route path="/signup" element={user ? <Navigate to="/dashboard" replace /> : <SignupPage />} />
-      <Route path="/pricing" element={<PricingPage />} />
-      <Route path="/success" element={
-        <ProtectedRoute>
-          <SuccessPage />
-        </ProtectedRoute>
-      } />
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <DashboardPage />

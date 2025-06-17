@@ -13,7 +13,7 @@ interface ResultsSectionProps {
   isPremium?: boolean;
 }
 
-const ResultsSection: React.FC<ResultsSectionProps> = ({ results, isPremium = false }) => {
+const ResultsSection: React.FC<ResultsSectionProps> = ({ results, isPremium = true }) => {
   const [copiedStates, setCopiedStates] = React.useState<{ [key: string]: boolean }>({});
 
   const handleCopy = async (text: string, key: string) => {
@@ -31,16 +31,14 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results, isPremium = fa
       <div className="text-center">
         <h2 className="text-3xl font-bold text-white mb-2">Your Generated Messages</h2>
         <p className="text-gray-300">Ready to copy and use in your outreach</p>
-        {isPremium && (
-          <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full border border-yellow-500/30 mt-2">
-            <Sparkles className="w-4 h-4 text-yellow-400 mr-1" />
-            <span className="text-yellow-300 text-sm font-medium">Premium Enhanced</span>
-          </div>
-        )}
+        <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full border border-yellow-500/30 mt-2">
+          <Sparkles className="w-4 h-4 text-yellow-400 mr-1" />
+          <span className="text-yellow-300 text-sm font-medium">All Features Included</span>
+        </div>
       </div>
 
-      {/* Subject Lines (Premium Feature) */}
-      {isPremium && results.subjectLines && (
+      {/* Subject Lines */}
+      {results.subjectLines && (
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
@@ -49,7 +47,7 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results, isPremium = fa
             </div>
             <div className="flex items-center px-3 py-1 bg-orange-500/20 rounded-full">
               <Sparkles className="w-4 h-4 text-orange-400 mr-1" />
-              <span className="text-orange-300 text-sm font-medium">Premium</span>
+              <span className="text-orange-300 text-sm font-medium">AI Generated</span>
             </div>
           </div>
           
@@ -122,8 +120,8 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results, isPremium = fa
             </pre>
           </div>
 
-          {/* Premium Analytics */}
-          {isPremium && (results.toneScore || results.readabilityScore) && (
+          {/* Analytics */}
+          {(results.toneScore || results.readabilityScore) && (
             <div className="mt-4 grid grid-cols-2 gap-4">
               {results.toneScore && (
                 <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-3 text-center">

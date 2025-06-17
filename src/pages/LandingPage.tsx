@@ -17,7 +17,6 @@ import {
   Send,
   BarChart3,
   History,
-  Crown,
   Sparkles,
   Eye,
   Filter,
@@ -45,7 +44,6 @@ const LandingPage: React.FC = () => {
             <div className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
               <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">How it Works</a>
-              <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</a>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -59,7 +57,7 @@ const LandingPage: React.FC = () => {
                 to="/signup"
                 className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105"
               >
-                Get Started
+                Get Started Free
               </Link>
             </div>
           </div>
@@ -78,8 +76,8 @@ const LandingPage: React.FC = () => {
         <div className="relative max-w-7xl mx-auto text-center">
           {/* Badge */}
           <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8 animate-fade-in">
-            <Star className="w-4 h-4 text-yellow-400 mr-2" />
-            <span className="text-sm text-gray-300">Trusted by 10,000+ professionals</span>
+            <Sparkles className="w-4 h-4 text-yellow-400 mr-2" />
+            <span className="text-sm text-gray-300">100% Free - All Features Included</span>
           </div>
 
           {/* Main headline */}
@@ -93,7 +91,7 @@ const LandingPage: React.FC = () => {
           {/* Subheadline */}
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed animate-slide-up delay-200">
             ColdSpark helps you create personalized, professional outreach emails in seconds. 
-            Powered by advanced AI to turn cold prospects into warm conversations.
+            Powered by advanced AI with all premium features completely free.
           </p>
 
           {/* CTA Buttons */}
@@ -119,8 +117,8 @@ const LandingPage: React.FC = () => {
               <div className="text-gray-400">Response Rate</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">10k+</div>
-              <div className="text-gray-400">Emails Generated</div>
+              <div className="text-3xl font-bold text-white mb-2">Free</div>
+              <div className="text-gray-400">Forever</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">30s</div>
@@ -135,13 +133,13 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Everything you need to
+              Everything you need
               <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent block">
-                close more deals
+                completely free
               </span>
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Our AI-powered platform provides all the tools you need to create compelling outreach campaigns
+              All premium features included at no cost - unlimited emails, advanced AI, analytics, and more
             </p>
           </div>
 
@@ -151,9 +149,9 @@ const LandingPage: React.FC = () => {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl mb-6 group-hover:scale-110 transition-transform">
                 <Target className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-4">Personalized Tone</h3>
+              <h3 className="text-xl font-semibold text-white mb-4">7 Advanced Tones</h3>
               <p className="text-gray-300 leading-relaxed">
-                Choose from 7 advanced tones including persuasive, empathetic, and authoritative to match your brand voice perfectly.
+                Choose from professional, friendly, persuasive, empathetic, and more to match your brand voice perfectly.
               </p>
             </div>
 
@@ -191,16 +189,16 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Premium Features Grid */}
+          {/* All Features Grid */}
           <div className="bg-gradient-to-r from-purple-600/10 to-blue-600/10 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/30">
             <div className="text-center mb-12">
               <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full border border-yellow-500/30 mb-4">
-                <Crown className="w-5 h-5 text-yellow-400 mr-2" />
-                <span className="text-yellow-300 font-medium">Premium Features</span>
+                <Sparkles className="w-5 h-5 text-yellow-400 mr-2" />
+                <span className="text-yellow-300 font-medium">All Features Free Forever</span>
               </div>
-              <h3 className="text-3xl font-bold text-white mb-4">Unlock Your Full Potential</h3>
+              <h3 className="text-3xl font-bold text-white mb-4">Everything Included</h3>
               <p className="text-gray-300 max-w-2xl mx-auto">
-                Take your outreach to the next level with advanced features designed for serious professionals
+                No hidden costs, no premium tiers - get access to all advanced features completely free
               </p>
             </div>
 
@@ -236,9 +234,9 @@ const LandingPage: React.FC = () => {
               </div>
 
               <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                <Shield className="w-8 h-8 text-cyan-400 mb-4" />
-                <h4 className="text-lg font-semibold text-white mb-2">Priority Support</h4>
-                <p className="text-gray-300 text-sm">Get faster response times and dedicated support to maximize your success.</p>
+                <Infinity className="w-8 h-8 text-cyan-400 mb-4" />
+                <h4 className="text-lg font-semibold text-white mb-2">Unlimited Everything</h4>
+                <p className="text-gray-300 text-sm">No limits on emails, voice messages, or any features - use as much as you need.</p>
               </div>
             </div>
           </div>
@@ -318,7 +316,7 @@ const LandingPage: React.FC = () => {
                 ))}
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                "ColdSpark increased my response rate by 300%. The AI-generated emails feel natural and personal. The email history feature helps me track what works best."
+                "ColdSpark increased my response rate by 300%. The AI-generated emails feel natural and personal. And it's completely free!"
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mr-4">
@@ -339,7 +337,7 @@ const LandingPage: React.FC = () => {
                 ))}
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                "The analytics dashboard is incredible. I can see exactly which tones work best for different industries. The lifetime plan was the best investment I made this year."
+                "The analytics dashboard is incredible. I can see exactly which tones work best for different industries. Can't believe it's free!"
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mr-4">
@@ -360,7 +358,7 @@ const LandingPage: React.FC = () => {
                 ))}
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                "I save hours every week with ColdSpark. The premium templates and voice messages set me apart from the competition. My clients love the personal touch."
+                "I save hours every week with ColdSpark. The voice messages and analytics set me apart from the competition. Amazing value!"
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mr-4">
@@ -376,158 +374,6 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Pricing Preview Section */}
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Simple, transparent pricing
-          </h2>
-          <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
-            Start free, upgrade when you're ready to scale your outreach
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Free Plan */}
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-2">Free</h3>
-                <div className="text-4xl font-bold text-white mb-4">$0</div>
-                <p className="text-gray-300">Perfect for getting started</p>
-              </div>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">3 emails per month</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">4 basic tones</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Basic templates</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Email copy & export</span>
-                </div>
-              </div>
-
-              <Link
-                to="/signup"
-                className="w-full flex items-center justify-center px-8 py-3 bg-white/20 text-white font-semibold rounded-lg hover:bg-white/30 transition-all"
-              >
-                Get Started Free
-              </Link>
-            </div>
-
-            {/* Premium Plan */}
-            <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/50 relative">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                  Most Popular
-                </span>
-              </div>
-
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-2">Premium</h3>
-                <div className="text-4xl font-bold text-white mb-4">$3.00<span className="text-lg">/month</span></div>
-                <p className="text-gray-300">For serious professionals</p>
-              </div>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Unlimited emails</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">7 advanced tones</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Premium templates</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Email analytics</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Voice messages</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Email history</span>
-                </div>
-              </div>
-
-              <Link
-                to="/pricing"
-                className="w-full flex items-center justify-center px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105"
-              >
-                Upgrade to Premium
-              </Link>
-            </div>
-
-            {/* Lifetime Plan */}
-            <div className="bg-gradient-to-r from-yellow-600/20 to-orange-600/20 backdrop-blur-lg rounded-2xl p-8 border border-yellow-500/50 relative">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-gradient-to-r from-yellow-600 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center">
-                  <Sparkles className="w-4 h-4 mr-1" />
-                  Best Value
-                </span>
-              </div>
-
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-2">Lifetime Access</h3>
-                <div className="text-4xl font-bold text-white mb-2">$99.99</div>
-                <div className="text-sm text-yellow-300 mb-4">One-time payment</div>
-                <p className="text-gray-300">Pay once, use forever</p>
-              </div>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center">
-                  <Infinity className="w-5 h-5 text-yellow-400 mr-3" />
-                  <span className="text-gray-200">Everything in Premium</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Lifetime access</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Future updates included</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">VIP support</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                  <span className="text-gray-200">Early access to features</span>
-                </div>
-              </div>
-
-              <Link
-                to="/pricing"
-                className="w-full flex items-center justify-center px-8 py-3 bg-gradient-to-r from-yellow-600 to-orange-600 text-white font-semibold rounded-lg hover:from-yellow-700 hover:to-orange-700 transition-all transform hover:scale-105"
-              >
-                <Crown className="w-5 h-5 mr-2" />
-                Get Lifetime Access
-              </Link>
-
-              <div className="mt-4 text-center">
-                <p className="text-green-400 text-sm font-medium">
-                  🎉 Save $1080+ vs monthly plan over 30 years
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Final CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
@@ -535,7 +381,7 @@ const LandingPage: React.FC = () => {
             Ready to transform your outreach?
           </h2>
           <p className="text-xl text-gray-300 mb-12">
-            Join thousands of professionals who are already closing more deals with ColdSpark
+            Join thousands of professionals who are already closing more deals with ColdSpark - completely free
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -544,14 +390,8 @@ const LandingPage: React.FC = () => {
               className="group flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105 shadow-2xl"
             >
               <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
-              Start Your Free Trial
+              Start Free Forever
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              to="/pricing"
-              className="flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20"
-            >
-              View Pricing
             </Link>
           </div>
         </div>
@@ -568,7 +408,6 @@ const LandingPage: React.FC = () => {
             
             <div className="flex items-center space-x-6 mb-4 md:mb-0">
               <a href="#features" className="text-gray-400 hover:text-white transition-colors">Features</a>
-              <a href="#pricing" className="text-gray-400 hover:text-white transition-colors">Pricing</a>
               <Link to="/login" className="text-gray-400 hover:text-white transition-colors">Sign In</Link>
             </div>
 

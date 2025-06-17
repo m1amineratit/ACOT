@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, LogOut, User, Crown } from 'lucide-react';
+import { Mail, LogOut, User } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useSubscription } from '../../hooks/useSubscription';
 
 const Header: React.FC = () => {
   const { user, signOut } = useAuth();
-  const { activeProductName } = useSubscription();
 
   return (
     <header className="bg-white/10 backdrop-blur-lg border-b border-white/20">
@@ -21,21 +19,11 @@ const Header: React.FC = () => {
             <Link to="/" className="text-gray-300 hover:text-white transition-colors">
               Home
             </Link>
-            <Link to="/pricing" className="text-gray-300 hover:text-white transition-colors">
-              Pricing
-            </Link>
           </nav>
 
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                {activeProductName && (
-                  <div className="flex items-center px-3 py-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full border border-yellow-500/30">
-                    <Crown className="w-4 h-4 text-yellow-400 mr-1" />
-                    <span className="text-yellow-300 text-sm font-medium">{activeProductName}</span>
-                  </div>
-                )}
-                
                 <div className="flex items-center space-x-2 text-gray-300">
                   <User className="w-5 h-5" />
                   <span className="hidden sm:inline">{user.email}</span>

@@ -11,13 +11,8 @@ import {
   getEmailStats,
   EmailHistoryRecord 
 } from '../../services/emailHistory';
-import { useSubscription } from '../../hooks/useSubscription';
 
-interface EmailHistoryProps {
-  isPremium: boolean;
-}
-
-const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
+const EmailHistory: React.FC = () => {
   const [emails, setEmails] = useState<EmailHistoryRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,14 +28,12 @@ const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
   } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const itemsPerPage = isPremium ? 10 : 2;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchEmailHistory();
-    if (isPremium) {
-      fetchStats();
-    }
-  }, [searchTerm, filterTone, filterIndustry, showFavoritesOnly, currentPage, isPremium]);
+    fetchStats();
+  }, [searchTerm, filterTone, filterIndustry, showFavoritesOnly, currentPage]);
 
   const fetchEmailHistory = async () => {
     setLoading(true);
@@ -82,9 +75,7 @@ const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
       setEmails(prev => prev.map(email => 
         email.id === id ? { ...email, is_favorite: !currentFavorite } : email
       ));
-      if (isPremium) {
-        fetchStats();
-      }
+      fetchStats();
     }
   };
 
@@ -94,9 +85,7 @@ const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
       if (success) {
         setEmails(prev => prev.filter(email => email.id !== id));
         setTotalCount(prev => prev - 1);
-        if (isPremium) {
-          fetchStats();
-        }
+        fetchStats();
       }
     }
   };
@@ -134,12 +123,12 @@ const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
           <div>
             <h3 className="text-xl font-semibold text-white">Email History</h3>
             <p className="text-gray-300 text-sm">
-              {isPremium ? `${totalCount} total emails` : `Last ${Math.min(totalCount, 2)} emails (Premium: unlimited history)`}
+              Complete email history with unlimited access
             </p>
           </div>
         </div>
         
-        {isPremium && emails.length > 0 && (
+        {emails.length > 0 && (
           <button
             onClick={exportEmails}
             className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
@@ -150,8 +139,8 @@ const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
         )}
       </div>
 
-      {/* Stats Dashboard for Premium Users */}
-      {isPremium && stats && (
+      {/* Stats Dashboard */}
+      {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-4 text-center">
             <Mail className="w-6 h-6 text-blue-400 mx-auto mb-2" />
@@ -208,32 +197,26 @@ const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
               <option value="Friendly" className="bg-gray-800">Friendly</option>
               <option value="Funny" className="bg-gray-800">Funny</option>
               <option value="Confident" className="bg-gray-800">Confident</option>
-              {isPremium && (
-                <>
-                  <option value="Persuasive" className="bg-gray-800">Persuasive</option>
-                  <option value="Empathetic" className="bg-gray-800">Empathetic</option>
-                  <option value="Authoritative" className="bg-gray-800">Authoritative</option>
-                </>
-              )}
+              <option value="Persuasive" className="bg-gray-800">Persuasive</option>
+              <option value="Empathetic" className="bg-gray-800">Empathetic</option>
+              <option value="Authoritative" className="bg-gray-800">Authoritative</option>
             </select>
           </div>
 
-          {isPremium && (
-            <button
-              onClick={() => {
-                setShowFavoritesOnly(!showFavoritesOnly);
-                setCurrentPage(1);
-              }}
-              className={`flex items-center px-4 py-3 rounded-lg transition-all ${
-                showFavoritesOnly 
-                  ? 'bg-yellow-600 text-white' 
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
-              }`}
-            >
-              <Star className={`w-4 h-4 mr-2 ${showFavoritesOnly ? 'fill-current' : ''}`} />
-              Favorites
-            </button>
-          )}
+          <button
+            onClick={() => {
+              setShowFavoritesOnly(!showFavoritesOnly);
+              setCurrentPage(1);
+            }}
+            className={`flex items-center px-4 py-3 rounded-lg transition-all ${
+              showFavoritesOnly 
+                ? 'bg-yellow-600 text-white' 
+                : 'bg-white/10 text-gray-300 hover:bg-white/20'
+            }`}
+          >
+            <Star className={`w-4 h-4 mr-2 ${showFavoritesOnly ? 'fill-current' : ''}`} />
+            Favorites
+          </button>
         </div>
       </div>
 
@@ -261,7 +244,7 @@ const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
                     }`}>
                       {email.tone}
                     </span>
-                    {isPremium && email.tone_score && (
+                    {email.tone_score && (
                       <span className="ml-2 px-2 py-1 bg-green-500/20 text-green-300 rounded-full text-xs font-medium">
                         {email.tone_score}% tone match
                       </span>
@@ -308,25 +291,23 @@ const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
                     )}
                   </button>
 
-                  {isPremium && (
-                    <button
-                      onClick={() => handleDelete(email.id)}
-                      className="p-2 text-red-400 hover:text-red-300 transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  )}
+                  <button
+                    onClick={() => handleDelete(email.id)}
+                    className="p-2 text-red-400 hover:text-red-300 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
               
               <div className="bg-black/20 rounded-lg p-3 border border-gray-600">
-                <p className="text-gray-300 text-sm line-clamp-3">
+                <p className="text-gray-200 text-sm line-clamp-3">
                   {email.cold_email_content.substring(0, 200)}...
                 </p>
               </div>
 
-              {/* Premium Analytics */}
-              {isPremium && (email.tone_score || email.readability_score) && (
+              {/* Analytics */}
+              {(email.tone_score || email.readability_score) && (
                 <div className="mt-3 flex items-center space-x-4">
                   {email.tone_score && (
                     <div className="flex items-center text-sm">
@@ -382,20 +363,6 @@ const EmailHistory: React.FC<EmailHistoryProps> = ({ isPremium }) => {
           <p className="text-gray-500 text-sm">
             {totalCount === 0 ? 'Generate your first email to see it here' : 'Try adjusting your search criteria'}
           </p>
-        </div>
-      )}
-
-      {!isPremium && emails.length >= 2 && (
-        <div className="mt-6 p-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-lg">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-purple-300 font-medium">Unlock Full Email History</p>
-              <p className="text-purple-200 text-sm">Premium users get unlimited email history, analytics, and advanced search</p>
-            </div>
-            <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all text-sm font-medium">
-              Upgrade
-            </button>
-          </div>
         </div>
       )}
     </div>
