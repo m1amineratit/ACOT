@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
         <div className="flex items-center justify-center mb-6">
           <Sparkles className="w-5 h-5 text-yellow-400 mr-2" />
           <p className="text-purple-300 font-medium">
-            100% Free Forever - All Premium Features Included
+            100% Free - All Premium Features Included
           </p>
         </div>
         
