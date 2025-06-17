@@ -1,4 +1,4 @@
-# AI Cold Outreach Tool - 100% Free Forever
+# AI Cold Outreach Tool - 100% Free
 
 A powerful, completely free AI-powered cold email generation tool that helps you create personalized, professional outreach emails that get responses.
 
