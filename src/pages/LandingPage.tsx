@@ -118,7 +118,6 @@ const LandingPage: React.FC = () => {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">Free</div>
-              <div className="text-gray-400">Forever</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">30s</div>
