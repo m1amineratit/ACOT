@@ -19,7 +19,7 @@ interface GeneratedEmails {
   readabilityScore?: number;
 }
 
-export const generateEmails = async (formData: FormData, isPremium: boolean = false): Promise<GeneratedEmails> => {
+export const generateEmails = async (formData: FormData, includeAdvancedFeatures: boolean = true): Promise<GeneratedEmails> => {
   const { name, recipient, purpose, tone, portfolio, industry, urgency } = formData;
   
   try {
@@ -27,11 +27,11 @@ export const generateEmails = async (formData: FormData, isPremium: boolean = fa
     const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
     if (!apiKey) {
       console.warn('OpenRouter API key not found, falling back to mock generation');
-      return generateMockEmails(formData, isPremium);
+      return generateMockEmails(formData, includeAdvancedFeatures);
     }
 
     // Create the prompt for AI generation
-    const prompt = createEmailPrompt(formData, isPremium);
+    const prompt = createEmailPrompt(formData, includeAdvancedFeatures);
     
     // Call OpenRouter API
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -71,7 +71,7 @@ export const generateEmails = async (formData: FormData, isPremium: boolean = fa
     }
 
     // Parse the generated content as plain text
-    const result = parseGeneratedContent(generatedContent, isPremium);
+    const result = parseGeneratedContent(generatedContent, includeAdvancedFeatures);
 
     // Save to database
     try {
@@ -102,11 +102,11 @@ export const generateEmails = async (formData: FormData, isPremium: boolean = fa
   } catch (error) {
     console.error('Error generating emails with AI:', error);
     // Fallback to mock generation if API fails
-    return generateMockEmails(formData, isPremium);
+    return generateMockEmails(formData, includeAdvancedFeatures);
   }
 };
 
-const createEmailPrompt = (formData: FormData, isPremium: boolean): string => {
+const createEmailPrompt = (formData: FormData, includeAdvancedFeatures: boolean): string => {
   const { name, recipient, purpose, tone, portfolio, industry, urgency, template } = formData;
   
   let prompt = `Generate a personalized cold outreach email and follow-up email with the following details:
@@ -129,8 +129,8 @@ Requirements:
 6. Remove all quotes and double quotes from the content
 7. Use plain text format only
 
-${isPremium ? `
-Premium Features:
+${includeAdvancedFeatures ? `
+Advanced Features:
 - Generate 3 subject line options
 - Include tone analysis score (0-100)
 - Include readability score (0-100)
@@ -146,7 +146,7 @@ COLD EMAIL:
 FOLLOW-UP EMAIL:
 [The follow-up email content]
 
-${isPremium ? `
+${includeAdvancedFeatures ? `
 SUBJECT LINES:
 [Subject line 1]
 [Subject line 2]
@@ -161,7 +161,7 @@ Make sure the emails are professional, engaging, and tailored to the specific re
   return prompt;
 };
 
-const parseGeneratedContent = (content: string, isPremium: boolean): GeneratedEmails => {
+const parseGeneratedContent = (content: string, includeAdvancedFeatures: boolean): GeneratedEmails => {
   try {
     // Clean the content by removing quotes and double quotes
     const cleanContent = content.replace(/["""'']/g, '');
@@ -209,8 +209,8 @@ const parseGeneratedContent = (content: string, isPremium: boolean): GeneratedEm
       followUp: followUp || 'Follow-up generation failed' 
     };
 
-    // Premium features
-    if (isPremium) {
+    // Advanced features (now always included in free version)
+    if (includeAdvancedFeatures) {
       // Extract subject lines
       const subjectSection = sections[3]?.trim();
       if (subjectSection) {
@@ -244,7 +244,7 @@ const parseGeneratedContent = (content: string, isPremium: boolean): GeneratedEm
     return {
       coldEmail: lines.slice(0, midPoint).join('\n').trim() || 'Email generation failed',
       followUp: lines.slice(midPoint).join('\n').trim() || 'Follow-up generation failed',
-      ...(isPremium && {
+      ...(includeAdvancedFeatures && {
         subjectLines: generateSubjectLines(cleanContent),
         toneScore: Math.floor(Math.random() * 20) + 80,
         readabilityScore: Math.floor(Math.random() * 15) + 85
@@ -269,7 +269,7 @@ const generateSubjectLines = (email: string): string[] => {
 };
 
 // Fallback mock generation function
-const generateMockEmails = async (formData: FormData, isPremium: boolean): Promise<GeneratedEmails> => {
+const generateMockEmails = async (formData: FormData, includeAdvancedFeatures: boolean): Promise<GeneratedEmails> => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -283,7 +283,7 @@ ${getOpeningLine(tone)} I hope this email finds you well.
 
 My name is ${name}, and I'm reaching out because ${purpose.toLowerCase()}.
 
-${getToneSpecificContent(tone, purpose, industry, isPremium)}
+${getToneSpecificContent(tone, purpose, industry, includeAdvancedFeatures)}
 
 ${portfolio ? `I'd love for you to check out my work at ${portfolio} to get a better sense of what I can bring to the table.` : ''}
 
@@ -300,7 +300,7 @@ Hi ${recipient.split(',')[0].replace(/^(Mr\.|Ms\.|Dr\.)?\s*/, '')},
 
 I wanted to follow up on my previous email about ${purpose.toLowerCase()}.
 
-${getFollowUpContent(tone, isPremium)}
+${getFollowUpContent(tone, includeAdvancedFeatures)}
 
 I completely understand if you're swamped with other priorities. If now isn't the right time, I'd be happy to reconnect in a few weeks.
 
@@ -311,8 +311,8 @@ ${name}`;
 
   const result: GeneratedEmails = { coldEmail, followUp };
 
-  // Premium features
-  if (isPremium) {
+  // Advanced features (now always included)
+  if (includeAdvancedFeatures) {
     result.subjectLines = generateSubjectLines(coldEmail);
     result.toneScore = Math.floor(Math.random() * 20) + 80;
     result.readabilityScore = Math.floor(Math.random() * 15) + 85;
@@ -322,7 +322,7 @@ ${name}`;
 };
 
 export const generateVoiceMessage = async (text: string): Promise<string> => {
-  // Simulate ElevenLabs API call
+  // Simulate voice generation
   await new Promise(resolve => setTimeout(resolve, 3000));
   
   // Using Web Speech API for demo (browser-based TTS)
@@ -377,10 +377,10 @@ const getOpeningLine = (tone: string): string => {
   }
 };
 
-const getToneSpecificContent = (tone: string, purpose: string, industry?: string, isPremium: boolean = false): string => {
+const getToneSpecificContent = (tone: string, purpose: string, industry?: string, includeAdvancedFeatures: boolean = false): string => {
   let baseContent = `I believe there is a great opportunity for us to work together, and I would love to explore how we can make that happen.`;
   
-  if (isPremium && industry) {
+  if (includeAdvancedFeatures && industry) {
     const industryInsights = {
       technology: 'With the rapid evolution in tech, strategic partnerships are more crucial than ever.',
       healthcare: 'In the healthcare sector, collaboration drives innovation and better patient outcomes.',
@@ -447,7 +447,7 @@ const getClosing = (tone: string): string => {
   }
 };
 
-const getFollowUpContent = (tone: string, isPremium: boolean = false): string => {
+const getFollowUpContent = (tone: string, includeAdvancedFeatures: boolean = false): string => {
   let baseContent = '';
   
   switch (tone) {
@@ -473,7 +473,7 @@ const getFollowUpContent = (tone: string, isPremium: boolean = false): string =>
       baseContent = 'I wanted to follow up to see if you had a chance to review my previous message.';
   }
 
-  if (isPremium) {
+  if (includeAdvancedFeatures) {
     baseContent += ' I have also included some additional insights that might be relevant to your current initiatives.';
   }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Github } from 'lucide-react';
+import { Heart, Github, Sparkles } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -12,9 +12,12 @@ const Footer: React.FC = () => {
           <span className="text-white font-semibold ml-2">Amine Ratit</span>
         </div>
         
-        <p className="text-gray-400 mb-6">
-          for the World's Largest Hackathon
-        </p>
+        <div className="flex items-center justify-center mb-6">
+          <Sparkles className="w-5 h-5 text-yellow-400 mr-2" />
+          <p className="text-purple-300 font-medium">
+            100% Free Forever - All Premium Features Included
+          </p>
+        </div>
         
         <div className="flex justify-center space-x-6">
           <a
@@ -30,7 +33,7 @@ const Footer: React.FC = () => {
         
         <div className="mt-8 pt-8 border-t border-white/10">
           <p className="text-gray-500 text-sm">
-            © 2025 AI Cold Outreach Tool. Empowering connections through AI.
+            © 2025 AI Cold Outreach Tool. Empowering connections through AI - completely free.
           </p>
         </div>
       </div>

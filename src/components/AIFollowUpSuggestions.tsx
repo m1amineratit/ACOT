@@ -27,13 +27,25 @@ const AIFollowUpSuggestions: React.FC<AIFollowUpSuggestionsProps> = ({ originalF
     { value: 'Casual', label: 'Casual' },
     { value: 'Funny', label: 'Funny' },
     { value: 'Persuasive', label: 'Persuasive' },
-    { value: 'Empathetic', label: 'Empathetic' }
+    { value: 'Empathetic', label: 'Empathetic' },
+    { value: 'Authoritative', label: 'Authoritative' }
   ];
 
   const generateAIFollowUps = async () => {
     setIsGenerating(true);
     
     try {
+      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+      
+      if (!apiKey) {
+        // Fallback suggestions if no API key
+        const fallbackSuggestions = generateFallbackSuggestions();
+        setSuggestions(fallbackSuggestions);
+        setIsGenerating(false);
+        setHasGenerated(true);
+        return;
+      }
+
       const prompt = `Generate 3 different follow-up email suggestions for a cold outreach campaign with these details:
 
 **Original Context:**
@@ -51,19 +63,21 @@ const AIFollowUpSuggestions: React.FC<AIFollowUpSuggestionsProps> = ({ originalF
 - Include different approaches and value propositions
 - Make them feel natural and not pushy
 
-Format as JSON:
-{
-  "followUps": [
-    "First follow-up email content...",
-    "Second follow-up email content...",
-    "Third follow-up email content..."
-  ]
-}`;
+Format as plain text with clear separators:
+
+FOLLOW-UP 1:
+[First follow-up email content]
+
+FOLLOW-UP 2:
+[Second follow-up email content]
+
+FOLLOW-UP 3:
+[Third follow-up email content]`;
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
           'HTTP-Referer': window.location.origin,
           'X-Title': 'AI Cold Outreach Tool'
@@ -93,35 +107,35 @@ Format as JSON:
       const content = data.choices[0]?.message?.content;
 
       if (content) {
-        try {
-          const jsonMatch = content.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            const parsed = JSON.parse(jsonMatch[0]);
-            setSuggestions(parsed.followUps || []);
-          } else {
-            // Fallback: split by common delimiters
-            const fallbackSuggestions = content.split(/(?:\n\n|\d+\.|Follow-up \d+:)/i)
-              .filter(s => s.trim().length > 50)
-              .slice(0, 3);
-            setSuggestions(fallbackSuggestions);
-          }
-        } catch (error) {
-          console.error('Error parsing AI response:', error);
-          setSuggestions([content]);
+        // Parse the response
+        const sections = content.split(/FOLLOW-UP \d+:/i);
+        const followUps = sections.slice(1).map(section => section.trim()).filter(section => section.length > 0);
+        
+        if (followUps.length >= 3) {
+          setSuggestions(followUps.slice(0, 3));
+        } else {
+          // Fallback if parsing fails
+          setSuggestions(generateFallbackSuggestions());
         }
+      } else {
+        setSuggestions(generateFallbackSuggestions());
       }
     } catch (error) {
       console.error('Error generating AI follow-ups:', error);
-      // Fallback suggestions
-      setSuggestions([
-        `Hi ${originalFormData.recipient.split(',')[0]},\n\nI wanted to follow up on my previous email about ${originalFormData.purpose.toLowerCase()}. I understand you're probably busy, but I believe this could be valuable for both of us.\n\nWould you have 10 minutes this week for a quick call?\n\nBest regards,\n${originalFormData.name}`,
-        `Hello ${originalFormData.recipient.split(',')[0]},\n\nI hope you're doing well. I'm following up on my message about ${originalFormData.purpose.toLowerCase()}.\n\nI've been thinking about how this could specifically benefit your organization, and I'd love to share some insights.\n\nWould you be interested in a brief conversation?\n\nThanks,\n${originalFormData.name}`,
-        `Hi ${originalFormData.recipient.split(',')[0]},\n\nI wanted to reach out one more time regarding ${originalFormData.purpose.toLowerCase()}.\n\nI completely understand if now isn't the right time, but I'd be happy to reconnect in a few months when things might be less hectic.\n\nThanks for your time,\n${originalFormData.name}`
-      ]);
+      setSuggestions(generateFallbackSuggestions());
     } finally {
       setIsGenerating(false);
       setHasGenerated(true);
     }
+  };
+
+  const generateFallbackSuggestions = (): string[] => {
+    const recipientName = originalFormData.recipient.split(',')[0];
+    return [
+      `Hi ${recipientName},\n\nI wanted to follow up on my previous email about ${originalFormData.purpose.toLowerCase()}. I understand you're probably busy, but I believe this could be valuable for both of us.\n\nWould you have 10 minutes this week for a quick call?\n\nBest regards,\n${originalFormData.name}`,
+      `Hello ${recipientName},\n\nI hope you're doing well. I'm following up on my message about ${originalFormData.purpose.toLowerCase()}.\n\nI've been thinking about how this could specifically benefit your organization, and I'd love to share some insights.\n\nWould you be interested in a brief conversation?\n\nThanks,\n${originalFormData.name}`,
+      `Hi ${recipientName},\n\nI wanted to reach out one more time regarding ${originalFormData.purpose.toLowerCase()}.\n\nI completely understand if now isn't the right time, but I'd be happy to reconnect in a few months when things might be less hectic.\n\nThanks for your time,\n${originalFormData.name}`
+    ];
   };
 
   const handleCopy = async (text: string, index: number) => {
@@ -148,7 +162,7 @@ Format as JSON:
           <div>
             <h3 className="text-xl font-semibold text-white">AI Follow-up Suggestions</h3>
             <p className="text-gray-300 text-sm">
-              Personalized follow-up emails generated by AI
+              Personalized follow-up emails generated by AI - completely free
             </p>
           </div>
         </div>
