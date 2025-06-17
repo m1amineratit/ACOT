@@ -155,21 +155,7 @@ const parseGeneratedContent = (content: string, isPremium: boolean): GeneratedEm
     // Try to extract JSON from the response
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
-      // Sanitize the JSON string by properly escaping control characters
-      let jsonString = jsonMatch[0];
-      
-      // Replace unescaped control characters with properly escaped versions
-      jsonString = jsonString
-        .replace(/\n/g, '\\n')
-        .replace(/\r/g, '\\r')
-        .replace(/\t/g, '\\t')
-        .replace(/\f/g, '\\f')
-        .replace(/\b/g, '\\b')
-        // Handle other potential control characters
-        .replace(/[\x00-\x1F\x7F]/g, (match) => {
-          return '\\u' + ('0000' + match.charCodeAt(0).toString(16)).slice(-4);
-        });
-      
+      const jsonString = jsonMatch[0];
       const parsed = JSON.parse(jsonString);
       return {
         coldEmail: parsed.coldEmail || '',
