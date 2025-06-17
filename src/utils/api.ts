@@ -47,7 +47,7 @@ export const generateEmails = async (formData: FormData, isPremium: boolean = fa
         messages: [
           {
             role: 'system',
-            content: 'You are an expert AI assistant specialized in writing personalized, professional, and engaging cold outreach emails. Generate emails that are natural, conversational, and avoid generic template language.'
+            content: 'You are an expert AI assistant specialized in writing personalized, professional, and engaging cold outreach emails. Generate emails that are natural, conversational, and avoid generic template language. Always respond in plain text format without JSON or special formatting.'
           },
           {
             role: 'user',
@@ -70,7 +70,7 @@ export const generateEmails = async (formData: FormData, isPremium: boolean = fa
       throw new Error('No content generated from API');
     }
 
-    // Parse the generated content
+    // Parse the generated content as plain text
     const result = parseGeneratedContent(generatedContent, isPremium);
 
     // Save to database
@@ -126,6 +126,8 @@ Requirements:
 3. Include a clear value proposition and call to action
 4. Create a follow-up email for if there's no response
 5. Make both emails feel personal and authentic, not templated
+6. Remove all quotes and double quotes from the content
+7. Use plain text format only
 
 ${isPremium ? `
 Premium Features:
@@ -136,71 +138,119 @@ Premium Features:
 - Include industry-specific insights
 ` : ''}
 
-Format your response as JSON:
-{
-  "coldEmail": "The main cold outreach email content",
-  "followUp": "The follow-up email content",
-  ${isPremium ? `"subjectLines": ["Subject 1", "Subject 2", "Subject 3"],
-  "toneScore": 85,
-  "readabilityScore": 92,` : ''}
-}
+Format your response as plain text with clear separators:
 
-Make sure the emails are professional, engaging, and tailored to the specific recipient and purpose.`;
+COLD EMAIL:
+[The main cold outreach email content]
+
+FOLLOW-UP EMAIL:
+[The follow-up email content]
+
+${isPremium ? `
+SUBJECT LINES:
+[Subject line 1]
+[Subject line 2]
+[Subject line 3]
+
+TONE SCORE: [number between 0-100]
+READABILITY SCORE: [number between 0-100]
+` : ''}
+
+Make sure the emails are professional, engaging, and tailored to the specific recipient and purpose. Do not use any quotes or double quotes in the email content.`;
 
   return prompt;
 };
 
 const parseGeneratedContent = (content: string, isPremium: boolean): GeneratedEmails => {
   try {
-    // Try to extract JSON from the response
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const jsonString = jsonMatch[0];
-      const parsed = JSON.parse(jsonString);
-      return {
-        coldEmail: parsed.coldEmail || '',
-        followUp: parsed.followUp || '',
-        ...(isPremium && {
-          subjectLines: parsed.subjectLines || [],
-          toneScore: parsed.toneScore || Math.floor(Math.random() * 20) + 80,
-          readabilityScore: parsed.readabilityScore || Math.floor(Math.random() * 15) + 85
-        })
-      };
+    // Clean the content by removing quotes and double quotes
+    const cleanContent = content.replace(/["""'']/g, '');
+    
+    // Split by sections
+    const sections = cleanContent.split(/(?:COLD EMAIL:|FOLLOW-UP EMAIL:|SUBJECT LINES:|TONE SCORE:|READABILITY SCORE:)/i);
+    
+    // Extract cold email (section 1)
+    let coldEmail = sections[1]?.trim() || '';
+    
+    // Extract follow-up email (section 2)
+    let followUp = sections[2]?.trim() || '';
+    
+    // Clean up any remaining formatting
+    coldEmail = coldEmail.replace(/^\s*[\-\*]\s*/gm, '').trim();
+    followUp = followUp.replace(/^\s*[\-\*]\s*/gm, '').trim();
+    
+    // If we couldn't parse properly, try alternative splitting
+    if (!coldEmail || !followUp) {
+      const lines = cleanContent.split('\n').filter(line => line.trim());
+      const emailStart = lines.findIndex(line => 
+        line.toLowerCase().includes('subject:') || 
+        line.toLowerCase().includes('hi ') || 
+        line.toLowerCase().includes('hello ')
+      );
+      
+      if (emailStart !== -1) {
+        const emailLines = lines.slice(emailStart);
+        const midPoint = Math.floor(emailLines.length / 2);
+        coldEmail = emailLines.slice(0, midPoint).join('\n').trim();
+        followUp = emailLines.slice(midPoint).join('\n').trim();
+      }
     }
+    
+    // Fallback if still empty
+    if (!coldEmail) {
+      coldEmail = cleanContent.substring(0, Math.floor(cleanContent.length / 2)).trim();
+    }
+    if (!followUp) {
+      followUp = cleanContent.substring(Math.floor(cleanContent.length / 2)).trim();
+    }
+
+    const result: GeneratedEmails = { 
+      coldEmail: coldEmail || 'Email generation failed', 
+      followUp: followUp || 'Follow-up generation failed' 
+    };
+
+    // Premium features
+    if (isPremium) {
+      // Extract subject lines
+      const subjectSection = sections[3]?.trim();
+      if (subjectSection) {
+        const subjectLines = subjectSection.split('\n')
+          .filter(line => line.trim())
+          .map(line => line.replace(/^\s*[\-\*\d\.]\s*/, '').trim())
+          .filter(line => line.length > 0)
+          .slice(0, 3);
+        result.subjectLines = subjectLines.length > 0 ? subjectLines : generateSubjectLines(coldEmail);
+      } else {
+        result.subjectLines = generateSubjectLines(coldEmail);
+      }
+
+      // Extract scores
+      const toneMatch = cleanContent.match(/TONE SCORE:\s*(\d+)/i);
+      const readabilityMatch = cleanContent.match(/READABILITY SCORE:\s*(\d+)/i);
+      
+      result.toneScore = toneMatch ? parseInt(toneMatch[1]) : Math.floor(Math.random() * 20) + 80;
+      result.readabilityScore = readabilityMatch ? parseInt(readabilityMatch[1]) : Math.floor(Math.random() * 15) + 85;
+    }
+
+    return result;
   } catch (error) {
-    console.error('Error parsing JSON response:', error);
+    console.error('Error parsing generated content:', error);
+    
+    // Fallback parsing
+    const cleanContent = content.replace(/["""'']/g, '');
+    const lines = cleanContent.split('\n').filter(line => line.trim());
+    const midPoint = Math.floor(lines.length / 2);
+    
+    return {
+      coldEmail: lines.slice(0, midPoint).join('\n').trim() || 'Email generation failed',
+      followUp: lines.slice(midPoint).join('\n').trim() || 'Follow-up generation failed',
+      ...(isPremium && {
+        subjectLines: generateSubjectLines(cleanContent),
+        toneScore: Math.floor(Math.random() * 20) + 80,
+        readabilityScore: Math.floor(Math.random() * 15) + 85
+      })
+    };
   }
-
-  // Fallback: try to extract emails from text
-  const emails = content.split(/(?:Follow[- ]?up|FOLLOW[- ]?UP)/i);
-  const coldEmail = emails[0]?.trim() || content;
-  const followUp = emails[1]?.trim() || generateSimpleFollowUp(coldEmail);
-
-  return {
-    coldEmail,
-    followUp,
-    ...(isPremium && {
-      subjectLines: generateSubjectLines(coldEmail),
-      toneScore: Math.floor(Math.random() * 20) + 80,
-      readabilityScore: Math.floor(Math.random() * 15) + 85
-    })
-  };
-};
-
-const generateSimpleFollowUp = (originalEmail: string): string => {
-  const lines = originalEmail.split('\n');
-  const recipientLine = lines.find(line => line.toLowerCase().includes('hi ') || line.toLowerCase().includes('hello '));
-  const recipient = recipientLine ? recipientLine.split(' ')[1]?.replace(',', '') : 'there';
-  
-  return `Hi ${recipient},
-
-I wanted to follow up on my previous email. I understand you're probably busy, but I believe this opportunity could be valuable for both of us.
-
-If now isn't the right time, I'd be happy to reconnect in a few weeks when things might be less hectic.
-
-Thanks for your time and consideration.
-
-Best regards`;
 };
 
 const generateSubjectLines = (email: string): string[] => {
@@ -311,15 +361,15 @@ const getPurposeSubject = (purpose: string, urgency?: string): string => {
 const getOpeningLine = (tone: string): string => {
   switch (tone) {
     case 'Friendly':
-      return 'Hope you\'re having a great day!';
+      return 'Hope you are having a great day!';
     case 'Funny':
-      return 'I promise this isn\'t another generic sales email (plot twist: it kind of is, but in a good way)!';
+      return 'I promise this is not another generic sales email (plot twist: it kind of is, but in a good way)!';
     case 'Confident':
-      return 'I\'m writing to you because I believe we could create something amazing together.';
+      return 'I am writing to you because I believe we could create something amazing together.';
     case 'Persuasive':
       return 'I have something that could significantly impact your business goals.';
     case 'Empathetic':
-      return 'I understand how challenging it can be to find the right partnerships in today\'s market.';
+      return 'I understand how challenging it can be to find the right partnerships in today market.';
     case 'Authoritative':
       return 'Based on my extensive experience in this field, I see a valuable opportunity for collaboration.';
     default:
@@ -328,7 +378,7 @@ const getOpeningLine = (tone: string): string => {
 };
 
 const getToneSpecificContent = (tone: string, purpose: string, industry?: string, isPremium: boolean = false): string => {
-  let baseContent = `I believe there's a great opportunity for us to work together, and I'd love to explore how we can make that happen.`;
+  let baseContent = `I believe there is a great opportunity for us to work together, and I would love to explore how we can make that happen.`;
   
   if (isPremium && industry) {
     const industryInsights = {
@@ -351,11 +401,11 @@ const getToneSpecificContent = (tone: string, purpose: string, industry?: string
   
   switch (tone) {
     case 'Friendly':
-      return `${baseContent} I'm really excited about the possibility of collaborating and think we could accomplish some wonderful things together.`;
+      return `${baseContent} I am really excited about the possibility of collaborating and think we could accomplish some wonderful things together.`;
     case 'Funny':
       return `${baseContent} I know, I know - another person sliding into your inbox. But hear me out, I think this could be the start of something pretty cool.`;
     case 'Confident':
-      return `${baseContent} I have a track record of delivering exceptional results, and I'm confident that my skills would be valuable to your organization.`;
+      return `${baseContent} I have a track record of delivering exceptional results, and I am confident that my skills would be valuable to your organization.`;
     case 'Persuasive':
       return `${baseContent} The data shows that partnerships like this typically result in 40% faster growth and significantly improved market positioning.`;
     case 'Empathetic':
@@ -372,9 +422,9 @@ const getUrgencyContent = (urgency?: string): string => {
     case 'high':
       return 'I understand you have a busy schedule, but I believe this opportunity is time-sensitive and could be mutually beneficial. Would you have 15 minutes this week for a quick call?';
     case 'low':
-      return 'I know timing is everything, so please feel free to reach out whenever it\'s convenient for you. I\'m happy to work around your schedule.';
+      return 'I know timing is everything, so please feel free to reach out whenever it is convenient for you. I am happy to work around your schedule.';
     default:
-      return 'I understand you\'re probably busy, but I\'d be grateful for just a few minutes of your time to discuss this opportunity. Would you be available for a brief call this week?';
+      return 'I understand you are probably busy, but I would be grateful for just a few minutes of your time to discuss this opportunity. Would you be available for a brief call this week?';
   }
 };
 
@@ -383,11 +433,11 @@ const getClosing = (tone: string): string => {
     case 'Friendly':
       return 'Looking forward to hopefully connecting soon!';
     case 'Funny':
-      return 'Thanks for reading this far - you\'re already awesome in my book!';
+      return 'Thanks for reading this far - you are already awesome in my book!';
     case 'Confident':
-      return 'I\'m confident this conversation will be worth both our time.';
+      return 'I am confident this conversation will be worth both our time.';
     case 'Persuasive':
-      return 'I\'m excited about the potential this partnership holds.';
+      return 'I am excited about the potential this partnership holds.';
     case 'Empathetic':
       return 'I appreciate your time and look forward to the possibility of working together.';
     case 'Authoritative':
@@ -424,7 +474,7 @@ const getFollowUpContent = (tone: string, isPremium: boolean = false): string =>
   }
 
   if (isPremium) {
-    baseContent += ' I\'ve also included some additional insights that might be relevant to your current initiatives.';
+    baseContent += ' I have also included some additional insights that might be relevant to your current initiatives.';
   }
 
   return baseContent;
@@ -435,11 +485,11 @@ const getFollowUpClosing = (tone: string): string => {
     case 'Friendly':
       return 'Hope to hear from you soon!';
     case 'Funny':
-      return 'Either way, you\'re still awesome - but a reply would make you legendary!';
+      return 'Either way, you are still awesome - but a reply would make you legendary!';
     case 'Confident':
       return 'I look forward to your response.';
     case 'Persuasive':
-      return 'I\'m confident you\'ll see the value in this opportunity.';
+      return 'I am confident you will see the value in this opportunity.';
     case 'Empathetic':
       return 'Thank you for your time and consideration.';
     case 'Authoritative':
