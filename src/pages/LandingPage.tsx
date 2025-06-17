@@ -194,7 +194,7 @@ const LandingPage: React.FC = () => {
             <div className="text-center mb-12">
               <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full border border-yellow-500/30 mb-4">
                 <Sparkles className="w-5 h-5 text-yellow-400 mr-2" />
-                <span className="text-yellow-300 font-medium">All Features Free Forever</span>
+                <span className="text-yellow-300 font-medium">All Features Free </span>
               </div>
               <h3 className="text-3xl font-bold text-white mb-4">Everything Included</h3>
               <p className="text-gray-300 max-w-2xl mx-auto">
@@ -390,7 +390,7 @@ const LandingPage: React.FC = () => {
               className="group flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105 shadow-2xl"
             >
               <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
-              Start Free Forever
+              Start Free 
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
