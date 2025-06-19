@@ -59,7 +59,16 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
     });
 
     if (!response.ok) {
-      throw new Error(`OpenRouter API request failed: ${response.status} ${response.statusText}`);
+      // Handle specific error codes
+      if (response.status === 402) {
+        throw new Error('OpenRouter API billing issue: Your account may have insufficient credits or exceeded usage limits. Please check your OpenRouter dashboard at https://openrouter.ai/dashboard to verify your billing status and add credits if needed.');
+      } else if (response.status === 401) {
+        throw new Error('OpenRouter API authentication failed: Please verify your API key is correct in your environment variables.');
+      } else if (response.status === 429) {
+        throw new Error('OpenRouter API rate limit exceeded: Please wait a moment and try again.');
+      } else {
+        throw new Error(`OpenRouter API request failed: ${response.status} ${response.statusText}. Please check your API configuration and try again.`);
+      }
     }
 
     const data = await response.json();
