@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Loader, Send, Volume2, Sparkles, Target, Clock } from 'lucide-react';
+import { Loader, Send, Volume2, Sparkles, Target, Clock, AlertTriangle } from 'lucide-react';
 import { generateEmails, generateVoiceMessage } from '../utils/api';
 import ResultsSection from './ResultsSection';
 import AIFollowUpSuggestions from './AIFollowUpSuggestions';
@@ -40,6 +40,7 @@ const EmailForm: React.FC = () => {
   const [results, setResults] = useState<GeneratedContent | null>(null);
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [showPreview, setShowPreview] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const toneOptions = [
     { value: 'Friendly', label: 'Friendly', description: 'Warm and approachable' },
@@ -90,6 +91,11 @@ const EmailForm: React.FC = () => {
     if (errors[name as keyof FormData]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
+    
+    // Clear API error when user makes changes
+    if (apiError) {
+      setApiError(null);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -98,11 +104,14 @@ const EmailForm: React.FC = () => {
     if (!validateForm()) return;
     
     setIsLoading(true);
+    setApiError(null);
+    
     try {
-      const generated = await generateEmails(formData, true); // Always use premium features
+      const generated = await generateEmails(formData, true);
       setResults(generated);
     } catch (error) {
       console.error('Error generating emails:', error);
+      setApiError(error instanceof Error ? error.message : 'Failed to generate emails. Please check your OpenRouter API configuration.');
     } finally {
       setIsLoading(false);
     }
@@ -114,8 +123,7 @@ const EmailForm: React.FC = () => {
     setIsGeneratingVoice(true);
     try {
       const audioUrl = await generateVoiceMessage(results.coldEmail);
-      const audio = new Audio(audioUrl);
-      audio.play();
+      // Audio is played directly by the generateVoiceMessage function
     } catch (error) {
       console.error('Error generating voice message:', error);
     } finally {
@@ -123,20 +131,45 @@ const EmailForm: React.FC = () => {
     }
   };
 
+  // Check if OpenRouter API key is configured
+  const isApiConfigured = !!import.meta.env.VITE_OPENROUTER_API_KEY;
+
   return (
     <>
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
+            {/* API Configuration Warning */}
+            {!isApiConfigured && (
+              <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
+                <div className="flex items-center">
+                  <AlertTriangle className="w-5 h-5 text-red-400 mr-2" />
+                  <p className="text-red-300 font-medium">
+                    OpenRouter API key not configured. Please add VITE_OPENROUTER_API_KEY to your environment variables.
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* All Features Available Banner */}
             <div className="mb-6 p-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-lg">
               <div className="flex items-center">
                 <Sparkles className="w-5 h-5 text-yellow-400 mr-2" />
                 <p className="text-purple-300 font-medium">
-                  All advanced AI features are now free! Enjoy unlimited access to all tools.
+                  All emails generated dynamically using AI - no templates, just pure AI creativity!
                 </p>
               </div>
             </div>
+
+            {/* API Error Display */}
+            {apiError && (
+              <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
+                <div className="flex items-center">
+                  <AlertTriangle className="w-5 h-5 text-red-400 mr-2" />
+                  <p className="text-red-300">{apiError}</p>
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
@@ -197,7 +230,7 @@ const EmailForm: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
                 <label htmlFor="tone" className="block text-sm font-medium text-gray-200 mb-2">
-                  Tone <span className="text-xs text-green-300">(All 7 options available)</span>
+                  Tone <span className="text-xs text-green-300">(AI will match perfectly)</span>
                 </label>
                 <select
                   id="tone"
@@ -216,7 +249,7 @@ const EmailForm: React.FC = () => {
 
               <div>
                 <label htmlFor="industry" className="block text-sm font-medium text-gray-200 mb-2">
-                  Industry <span className="text-xs text-green-300">(Enhanced targeting)</span>
+                  Industry <span className="text-xs text-green-300">(AI personalization)</span>
                 </label>
                 <select
                   id="industry"
@@ -253,7 +286,7 @@ const EmailForm: React.FC = () => {
 
               <div>
                 <label htmlFor="urgency" className="block text-sm font-medium text-gray-200 mb-2">
-                  Priority Level <span className="text-xs text-green-300">(Affects tone)</span>
+                  Priority Level <span className="text-xs text-green-300">(AI adapts tone)</span>
                 </label>
                 <select
                   id="urgency"
@@ -274,7 +307,7 @@ const EmailForm: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || !isApiConfigured}
                 className="flex-1 flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {isLoading ? (
@@ -293,7 +326,7 @@ const EmailForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPreview(true)}
-                disabled={!formData.name || !formData.recipient || !formData.purpose}
+                disabled={!formData.name || !formData.recipient || !formData.purpose || !isApiConfigured}
                 className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 <Clock className="w-5 h-5 mr-2" />

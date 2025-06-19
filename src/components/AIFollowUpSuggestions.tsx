@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RefreshCw, Calendar, Mail, MessageSquare, Copy, Check, Loader, Sparkles } from 'lucide-react';
+import { RefreshCw, Calendar, Mail, MessageSquare, Copy, Check, Loader, Sparkles, AlertTriangle } from 'lucide-react';
 import { copyToClipboard } from '../utils/clipboard';
 
 interface AIFollowUpSuggestionsProps {
@@ -20,6 +20,7 @@ const AIFollowUpSuggestions: React.FC<AIFollowUpSuggestionsProps> = ({ originalF
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const toneOptions = [
     { value: 'Professional', label: 'Professional' },
@@ -33,17 +34,13 @@ const AIFollowUpSuggestions: React.FC<AIFollowUpSuggestionsProps> = ({ originalF
 
   const generateAIFollowUps = async () => {
     setIsGenerating(true);
+    setError(null);
     
     try {
       const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
       
       if (!apiKey) {
-        // Fallback suggestions if no API key
-        const fallbackSuggestions = generateFallbackSuggestions();
-        setSuggestions(fallbackSuggestions);
-        setIsGenerating(false);
-        setHasGenerated(true);
-        return;
+        throw new Error('OpenRouter API key not configured');
       }
 
       const prompt = `Generate 3 different follow-up email suggestions for a cold outreach campaign with these details:
@@ -62,17 +59,19 @@ const AIFollowUpSuggestions: React.FC<AIFollowUpSuggestionsProps> = ({ originalF
 - Keep them concise but personalized
 - Include different approaches and value propositions
 - Make them feel natural and not pushy
+- Use real, engaging content - no generic templates
+- Each should have a different angle or hook
 
 Format as plain text with clear separators:
 
 FOLLOW-UP 1:
-[First follow-up email content]
+[First follow-up email content - 1 week later approach]
 
 FOLLOW-UP 2:
-[Second follow-up email content]
+[Second follow-up email content - 2 weeks later approach]
 
 FOLLOW-UP 3:
-[Third follow-up email content]`;
+[Third follow-up email content - 1 month later approach]`;
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
@@ -87,7 +86,7 @@ FOLLOW-UP 3:
           messages: [
             {
               role: 'system',
-              content: 'You are an expert at writing follow-up emails for cold outreach. Generate personalized, natural follow-ups that maintain engagement without being pushy.'
+              content: 'You are an expert at writing follow-up emails for cold outreach. Generate personalized, natural follow-ups that maintain engagement without being pushy. Avoid generic templates and create unique, compelling content.'
             },
             {
               role: 'user',
@@ -95,47 +94,37 @@ FOLLOW-UP 3:
             }
           ],
           temperature: 0.7,
-          max_tokens: 1500
+          max_tokens: 2000
         })
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate follow-ups');
+        throw new Error(`OpenRouter API request failed: ${response.status}`);
       }
 
       const data = await response.json();
       const content = data.choices[0]?.message?.content;
 
-      if (content) {
-        // Parse the response
-        const sections = content.split(/FOLLOW-UP \d+:/i);
-        const followUps = sections.slice(1).map(section => section.trim()).filter(section => section.length > 0);
-        
-        if (followUps.length >= 3) {
-          setSuggestions(followUps.slice(0, 3));
-        } else {
-          // Fallback if parsing fails
-          setSuggestions(generateFallbackSuggestions());
-        }
+      if (!content) {
+        throw new Error('No content generated from OpenRouter API');
+      }
+
+      // Parse the response
+      const sections = content.split(/FOLLOW-UP \d+:/i);
+      const followUps = sections.slice(1).map(section => section.trim()).filter(section => section.length > 0);
+      
+      if (followUps.length >= 3) {
+        setSuggestions(followUps.slice(0, 3));
       } else {
-        setSuggestions(generateFallbackSuggestions());
+        throw new Error('Failed to generate all follow-up suggestions');
       }
     } catch (error) {
       console.error('Error generating AI follow-ups:', error);
-      setSuggestions(generateFallbackSuggestions());
+      setError(error instanceof Error ? error.message : 'Failed to generate follow-ups');
     } finally {
       setIsGenerating(false);
       setHasGenerated(true);
     }
-  };
-
-  const generateFallbackSuggestions = (): string[] => {
-    const recipientName = originalFormData.recipient.split(',')[0];
-    return [
-      `Hi ${recipientName},\n\nI wanted to follow up on my previous email about ${originalFormData.purpose.toLowerCase()}. I understand you're probably busy, but I believe this could be valuable for both of us.\n\nWould you have 10 minutes this week for a quick call?\n\nBest regards,\n${originalFormData.name}`,
-      `Hello ${recipientName},\n\nI hope you're doing well. I'm following up on my message about ${originalFormData.purpose.toLowerCase()}.\n\nI've been thinking about how this could specifically benefit your organization, and I'd love to share some insights.\n\nWould you be interested in a brief conversation?\n\nThanks,\n${originalFormData.name}`,
-      `Hi ${recipientName},\n\nI wanted to reach out one more time regarding ${originalFormData.purpose.toLowerCase()}.\n\nI completely understand if now isn't the right time, but I'd be happy to reconnect in a few months when things might be less hectic.\n\nThanks for your time,\n${originalFormData.name}`
-    ];
   };
 
   const handleCopy = async (text: string, index: number) => {
@@ -154,6 +143,8 @@ FOLLOW-UP 3:
     return <IconComponent className="w-5 h-5 text-blue-400" />;
   };
 
+  const isApiConfigured = !!import.meta.env.VITE_OPENROUTER_API_KEY;
+
   return (
     <div className="mt-8 bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-xl">
       <div className="flex items-center justify-between mb-6">
@@ -162,7 +153,7 @@ FOLLOW-UP 3:
           <div>
             <h3 className="text-xl font-semibold text-white">AI Follow-up Suggestions</h3>
             <p className="text-gray-300 text-sm">
-              Personalized follow-up emails generated by AI - completely free
+              Personalized follow-up emails generated by AI in real-time
             </p>
           </div>
         </div>
@@ -176,6 +167,7 @@ FOLLOW-UP 3:
               setSelectedTone(e.target.value);
               setHasGenerated(false);
               setSuggestions([]);
+              setError(null);
             }}
             className="px-3 py-1 bg-white/10 border border-white/30 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
           >
@@ -188,11 +180,23 @@ FOLLOW-UP 3:
         </div>
       </div>
 
+      {/* API Configuration Warning */}
+      {!isApiConfigured && (
+        <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
+          <div className="flex items-center">
+            <AlertTriangle className="w-5 h-5 text-red-400 mr-2" />
+            <p className="text-red-300">
+              OpenRouter API key not configured. Please add VITE_OPENROUTER_API_KEY to generate AI follow-ups.
+            </p>
+          </div>
+        </div>
+      )}
+
       {!hasGenerated && (
         <div className="text-center py-8">
           <button
             onClick={generateAIFollowUps}
-            disabled={isGenerating}
+            disabled={isGenerating || !isApiConfigured}
             className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
             {isGenerating ? (
@@ -206,6 +210,20 @@ FOLLOW-UP 3:
                 Generate AI Follow-ups
               </>
             )}
+          </button>
+        </div>
+      )}
+
+      {error && (
+        <div className="text-center py-8">
+          <div className="text-red-400 mb-4">⚠️ Generation Failed</div>
+          <p className="text-gray-300 mb-4">{error}</p>
+          <button
+            onClick={generateAIFollowUps}
+            disabled={!isApiConfigured}
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
+          >
+            Try Again
           </button>
         </div>
       )}
@@ -224,6 +242,10 @@ FOLLOW-UP 3:
                     <span className="text-sm font-medium text-gray-300 ml-2">
                       Follow-up {index + 1} ({index === 0 ? '1 week later' : index === 1 ? '2 weeks later' : '1 month later'})
                     </span>
+                    <div className="ml-3 flex items-center px-2 py-1 bg-purple-500/20 rounded-full">
+                      <Sparkles className="w-3 h-3 text-purple-400 mr-1" />
+                      <span className="text-purple-300 text-xs font-medium">AI Generated</span>
+                    </div>
                   </div>
                   <button
                     onClick={() => handleCopy(suggestion, index)}
@@ -261,6 +283,7 @@ FOLLOW-UP 3:
               onClick={() => {
                 setHasGenerated(false);
                 setSuggestions([]);
+                setError(null);
               }}
               className="flex items-center px-4 py-2 bg-white/10 text-gray-300 rounded-lg hover:bg-white/20 transition-all text-sm font-medium"
             >
