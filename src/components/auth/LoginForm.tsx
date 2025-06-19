@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import Header from '../layout/Header';
 import Alert from '../ui/Alert';
 import LoadingSpinner from '../ui/LoadingSpinner';
+import GoogleSignInButton from './GoogleSignInButton';
 
 const LoginForm: React.FC = () => {
   const { signIn } = useAuth();
@@ -53,6 +54,21 @@ const LoginForm: React.FC = () => {
                 <Alert type="error" message={error} onClose={() => setError(null)} />
               </div>
             )}
+
+            {/* Google Sign In Button */}
+            <div className="mb-6">
+              <GoogleSignInButton />
+            </div>
+
+            {/* Divider */}
+            <div className="relative mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/20"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-gray-900 text-gray-400">Or continue with email</span>
+              </div>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>

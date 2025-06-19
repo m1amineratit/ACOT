@@ -5,6 +5,7 @@ import { AuthState, User } from '../types/auth';
 interface AuthContextType extends AuthState {
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signUp: (email: string, password: string) => Promise<{ error: string | null }>;
+  signInWithGoogle: () => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -32,6 +33,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: session.user.id,
           email: session.user.email!,
           created_at: session.user.created_at,
+          full_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || null,
+          avatar_url: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || null,
+          provider: session.user.app_metadata?.provider || 'email',
         } : null,
         loading: false,
       });
@@ -46,6 +50,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: session.user.id,
           email: session.user.email!,
           created_at: session.user.created_at,
+          full_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || null,
+          avatar_url: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || null,
+          provider: session.user.app_metadata?.provider || 'email',
         } : null,
         loading: false,
       });
@@ -75,6 +82,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error: error?.message || null };
   };
 
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    });
+
+    return { error: error?.message || null };
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
   };
@@ -83,6 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     ...authState,
     signIn,
     signUp,
+    signInWithGoogle,
     signOut,
   };
 

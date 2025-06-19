@@ -6,6 +6,22 @@ import { useAuth } from '../../contexts/AuthContext';
 const Header: React.FC = () => {
   const { user, signOut } = useAuth();
 
+  const getDisplayName = () => {
+    if (user?.full_name) {
+      return user.full_name;
+    }
+    return user?.email?.split('@')[0] || 'User';
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
     <header className="bg-white/10 backdrop-blur-lg border-b border-white/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,9 +40,24 @@ const Header: React.FC = () => {
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                <div className="flex items-center space-x-2 text-gray-300">
-                  <User className="w-5 h-5" />
-                  <span className="hidden sm:inline">{user.email}</span>
+                <div className="flex items-center space-x-3 text-gray-300">
+                  {user.avatar_url ? (
+                    <img
+                      src={user.avatar_url}
+                      alt={getDisplayName()}
+                      className="w-8 h-8 rounded-full border-2 border-white/20"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                      {getInitials(getDisplayName())}
+                    </div>
+                  )}
+                  <div className="hidden sm:block">
+                    <div className="text-white font-medium text-sm">{getDisplayName()}</div>
+                    {user.provider && user.provider !== 'email' && (
+                      <div className="text-xs text-gray-400 capitalize">via {user.provider}</div>
+                    )}
+                  </div>
                 </div>
                 
                 <button
