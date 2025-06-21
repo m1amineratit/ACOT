@@ -9,18 +9,20 @@ interface FormData {
   template?: string;
   industry?: string;
   urgency?: string;
+  recipientContext?: string;
 }
 
 interface GeneratedEmails {
   coldEmail: string;
   followUp: string;
   subjectLines?: string[];
+  icebreakers?: string[];
   toneScore?: number;
   readabilityScore?: number;
 }
 
 export const generateEmails = async (formData: FormData, includeAdvancedFeatures: boolean = true): Promise<GeneratedEmails> => {
-  const { name, recipient, purpose, tone, portfolio, industry, urgency } = formData;
+  const { name, recipient, purpose, tone, portfolio, industry, urgency, recipientContext } = formData;
   
   try {
     // Check if API key is available
@@ -54,7 +56,7 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
           }
         ],
         temperature: 0.7,
-        max_tokens: 2500
+        max_tokens: 3000
       })
     });
 
@@ -98,8 +100,10 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
         cold_email_content: result.coldEmail,
         follow_up_content: result.followUp,
         subject_lines: result.subjectLines,
+        icebreakers: result.icebreakers,
         tone_score: result.toneScore,
-        readability_score: result.readabilityScore
+        readability_score: result.readabilityScore,
+        recipient_context: recipientContext
       });
     } catch (error) {
       console.error('Failed to save email history:', error);
@@ -114,7 +118,7 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
 };
 
 const createEmailPrompt = (formData: FormData, includeAdvancedFeatures: boolean): string => {
-  const { name, recipient, purpose, tone, portfolio, industry, urgency } = formData;
+  const { name, recipient, purpose, tone, portfolio, industry, urgency, recipientContext } = formData;
   
   let prompt = `Generate a personalized cold outreach email and follow-up email with the following details:
 
@@ -125,6 +129,7 @@ const createEmailPrompt = (formData: FormData, includeAdvancedFeatures: boolean)
 **Industry:** ${industry || 'Not specified'}
 **Urgency:** ${urgency || 'medium'}
 ${portfolio ? `**Portfolio/Website:** ${portfolio}` : ''}
+${recipientContext ? `**Personal Context for Icebreakers:** ${recipientContext}` : ''}
 
 Requirements:
 1. Create a compelling cold email that captures attention immediately
@@ -137,9 +142,19 @@ Requirements:
 8. Personalize based on the recipient and industry context
 9. Include specific details that show research and genuine interest
 
+${recipientContext ? `
+ICEBREAKER GENERATION:
+- Use the personal context provided to create 3 unique, highly personalized icebreaker opening lines
+- Each icebreaker should directly reference the context in a natural, engaging way
+- Make them conversation starters that show genuine interest and research
+- Vary the approach: one direct reference, one question-based, one insight-based
+- Keep each icebreaker to 1-2 sentences maximum
+` : ''}
+
 ${includeAdvancedFeatures ? `
 Advanced Features Required:
 - Generate exactly 3 compelling subject line options
+${recipientContext ? '- Generate exactly 3 personalized icebreaker options based on the context provided' : ''}
 - Provide a tone analysis score (0-100) based on how well the email matches the requested tone
 - Provide a readability score (0-100) based on clarity and engagement
 - Use advanced personalization techniques
@@ -161,11 +176,18 @@ SUBJECT LINES:
 [Subject line option 2]
 [Subject line option 3]
 
+${recipientContext ? `
+ICEBREAKERS:
+[Icebreaker option 1 - direct reference to context]
+[Icebreaker option 2 - question-based approach]
+[Icebreaker option 3 - insight-based approach]
+` : ''}
+
 TONE SCORE: [number between 0-100]
 READABILITY SCORE: [number between 0-100]
 ` : ''}
 
-Important: Make the emails highly personalized, engaging, and tailored to the specific recipient and purpose. Avoid any generic template language. Each email should feel like it was written specifically for this recipient.`;
+Important: Make the emails highly personalized, engaging, and tailored to the specific recipient and purpose. Avoid any generic template language. Each email should feel like it was written specifically for this recipient.${recipientContext ? ' Use the personal context to create genuine connection points that make the recipient feel like you\'ve done your research.' : ''}`;
 
   return prompt;
 };
@@ -177,7 +199,7 @@ const parseGeneratedContent = (content: string, includeAdvancedFeatures: boolean
     
     // Split by sections using regex to find the markers
     const coldEmailMatch = cleanContent.match(/COLD EMAIL:\s*([\s\S]*?)(?=FOLLOW-UP EMAIL:|$)/i);
-    const followUpMatch = cleanContent.match(/FOLLOW-UP EMAIL:\s*([\s\S]*?)(?=SUBJECT LINES:|TONE SCORE:|$)/i);
+    const followUpMatch = cleanContent.match(/FOLLOW-UP EMAIL:\s*([\s\S]*?)(?=SUBJECT LINES:|ICEBREAKERS:|TONE SCORE:|$)/i);
     
     let coldEmail = coldEmailMatch ? coldEmailMatch[1].trim() : '';
     let followUp = followUpMatch ? followUpMatch[1].trim() : '';
@@ -188,7 +210,7 @@ const parseGeneratedContent = (content: string, includeAdvancedFeatures: boolean
     
     // If parsing failed, try alternative approach
     if (!coldEmail || !followUp) {
-      const sections = cleanContent.split(/(?:COLD EMAIL:|FOLLOW-UP EMAIL:|SUBJECT LINES:|TONE SCORE:|READABILITY SCORE:)/i);
+      const sections = cleanContent.split(/(?:COLD EMAIL:|FOLLOW-UP EMAIL:|SUBJECT LINES:|ICEBREAKERS:|TONE SCORE:|READABILITY SCORE:)/i);
       if (sections.length >= 3) {
         coldEmail = sections[1]?.trim() || '';
         followUp = sections[2]?.trim() || '';
@@ -211,7 +233,7 @@ const parseGeneratedContent = (content: string, includeAdvancedFeatures: boolean
     // Parse advanced features
     if (includeAdvancedFeatures) {
       // Extract subject lines
-      const subjectMatch = cleanContent.match(/SUBJECT LINES:\s*([\s\S]*?)(?=TONE SCORE:|READABILITY SCORE:|$)/i);
+      const subjectMatch = cleanContent.match(/SUBJECT LINES:\s*([\s\S]*?)(?=ICEBREAKERS:|TONE SCORE:|READABILITY SCORE:|$)/i);
       if (subjectMatch) {
         const subjectLines = subjectMatch[1]
           .split('\n')
@@ -222,6 +244,20 @@ const parseGeneratedContent = (content: string, includeAdvancedFeatures: boolean
         result.subjectLines = subjectLines.length > 0 ? subjectLines : generateFallbackSubjectLines(coldEmail);
       } else {
         result.subjectLines = generateFallbackSubjectLines(coldEmail);
+      }
+
+      // Extract icebreakers
+      const icebreakersMatch = cleanContent.match(/ICEBREAKERS:\s*([\s\S]*?)(?=TONE SCORE:|READABILITY SCORE:|$)/i);
+      if (icebreakersMatch) {
+        const icebreakers = icebreakersMatch[1]
+          .split('\n')
+          .filter(line => line.trim())
+          .map(line => line.replace(/^\s*[\-\*\d\.]\s*/, '').trim())
+          .filter(line => line.length > 0)
+          .slice(0, 3);
+        result.icebreakers = icebreakers.length > 0 ? icebreakers : [];
+      } else {
+        result.icebreakers = [];
       }
 
       // Extract scores

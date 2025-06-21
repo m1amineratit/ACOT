@@ -1,5 +1,5 @@
 import React from 'react';
-import { Copy, Mail, MessageSquare, Check, BarChart3, Target, Sparkles } from 'lucide-react';
+import { Copy, Mail, MessageSquare, Check, BarChart3, Target, Sparkles, Lightbulb } from 'lucide-react';
 import { copyToClipboard } from '../utils/clipboard';
 
 interface ResultsSectionProps {
@@ -7,6 +7,7 @@ interface ResultsSectionProps {
     coldEmail: string;
     followUp: string;
     subjectLines?: string[];
+    icebreakers?: string[];
     toneScore?: number;
     readabilityScore?: number;
   };
@@ -36,6 +37,63 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results, isPremium = tr
           <span className="text-yellow-300 text-sm font-medium">All Features Included</span>
         </div>
       </div>
+
+      {/* AI Icebreakers Section */}
+      {results.icebreakers && results.icebreakers.length > 0 && (
+        <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 backdrop-blur-lg rounded-2xl p-6 border border-yellow-500/30 shadow-xl">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center">
+              <Lightbulb className="w-6 h-6 text-yellow-400 mr-3" />
+              <div>
+                <h3 className="text-xl font-semibold text-white">AI-Generated Icebreakers</h3>
+                <p className="text-yellow-200 text-sm">Personalized opening lines based on your context</p>
+              </div>
+            </div>
+            <div className="flex items-center px-3 py-1 bg-yellow-500/20 rounded-full">
+              <Sparkles className="w-4 h-4 text-yellow-400 mr-1" />
+              <span className="text-yellow-300 text-sm font-medium">🆕 NEW FEATURE</span>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {results.icebreakers.map((icebreaker, index) => (
+              <div key={index} className="bg-gray-900/50 rounded-lg p-4 border border-yellow-500/30">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-yellow-300 text-sm font-medium">
+                    {index === 0 ? 'Direct Reference' : index === 1 ? 'Question-Based' : 'Insight-Based'}
+                  </span>
+                  <button
+                    onClick={() => handleCopy(icebreaker, `icebreaker-${index}`)}
+                    className={`flex items-center px-2 py-1 rounded text-xs font-medium transition-all ${
+                      copiedStates[`icebreaker-${index}`]
+                        ? 'bg-green-600 text-white'
+                        : 'bg-white/20 text-gray-300 hover:bg-white/30'
+                    }`}
+                  >
+                    {copiedStates[`icebreaker-${index}`] ? (
+                      <>
+                        <Check className="w-3 h-3 mr-1" />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3 h-3 mr-1" />
+                        Copy
+                      </>
+                    )}
+                  </button>
+                </div>
+                <p className="text-gray-200 text-sm leading-relaxed">{icebreaker}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
+            <p className="text-yellow-200 text-sm">
+              💡 <strong>Pro Tip:</strong> Use these icebreakers as your email opening lines to create instant personal connection and dramatically increase response rates!
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Subject Lines */}
       {results.subjectLines && (

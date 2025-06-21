@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Loader, Send, Volume2, Sparkles, Target, Clock, AlertTriangle } from 'lucide-react';
+import { Loader, Send, Volume2, Sparkles, Target, Clock, AlertTriangle, Lightbulb } from 'lucide-react';
 import { generateEmails, generateVoiceMessage } from '../utils/api';
 import ResultsSection from './ResultsSection';
 import AIFollowUpSuggestions from './AIFollowUpSuggestions';
@@ -14,12 +14,14 @@ interface FormData {
   portfolio: string;
   industry?: string;
   urgency?: string;
+  recipientContext?: string;
 }
 
 interface GeneratedContent {
   coldEmail: string;
   followUp: string;
   subjectLines?: string[];
+  icebreakers?: string[];
   toneScore?: number;
   readabilityScore?: number;
 }
@@ -32,7 +34,8 @@ const EmailForm: React.FC = () => {
     tone: 'Professional',
     portfolio: '',
     industry: '',
-    urgency: 'medium'
+    urgency: 'medium',
+    recipientContext: ''
   });
   
   const [isLoading, setIsLoading] = useState(false);
@@ -151,6 +154,16 @@ const EmailForm: React.FC = () => {
               </div>
             )}
 
+            {/* New Icebreaker Feature Banner */}
+            <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-lg">
+              <div className="flex items-center">
+                <Lightbulb className="w-5 h-5 text-yellow-400 mr-2" />
+                <p className="text-yellow-300 font-medium">
+                  🆕 NEW: AI Icebreaker Generator - Add personal context for ultra-personalized opening lines!
+                </p>
+              </div>
+            </div>
+
             {/* All Features Available Banner */}
             <div className="mb-6 p-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-lg">
               <div className="flex items-center">
@@ -225,6 +238,29 @@ const EmailForm: React.FC = () => {
                 placeholder="Describe why you're reaching out and what you hope to achieve..."
               />
               {errors.purpose && <p className="text-red-400 text-sm mt-1">{errors.purpose}</p>}
+            </div>
+
+            {/* NEW: Recipient Context Field for Icebreakers */}
+            <div className="mb-6">
+              <label htmlFor="recipientContext" className="block text-sm font-medium text-gray-200 mb-2">
+                <div className="flex items-center">
+                  <Lightbulb className="w-4 h-4 text-yellow-400 mr-2" />
+                  Personal Context for AI Icebreakers
+                  <span className="text-yellow-400 ml-2 text-xs font-bold">NEW!</span>
+                </div>
+              </label>
+              <textarea
+                id="recipientContext"
+                name="recipientContext"
+                value={formData.recipientContext}
+                onChange={handleInputChange}
+                rows={3}
+                className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all resize-none"
+                placeholder="e.g., 'They recently posted about AI adoption challenges on LinkedIn' or 'Their company just announced a $10M Series A funding' or 'We both attended Stanford' - AI will create personalized icebreakers from this!"
+              />
+              <p className="text-gray-400 text-xs mt-1">
+                💡 Add any personal detail, recent activity, or connection point. AI will generate custom icebreakers to make your email stand out!
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -318,7 +354,7 @@ const EmailForm: React.FC = () => {
                 ) : (
                   <>
                     <Send className="w-5 h-5 mr-2" />
-                    Generate with AI
+                    Generate with AI + Icebreakers
                   </>
                 )}
               </button>

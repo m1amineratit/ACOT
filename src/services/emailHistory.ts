@@ -13,6 +13,8 @@ export interface EmailHistoryRecord {
   cold_email_content: string;
   follow_up_content: string;
   subject_lines: string[];
+  icebreakers?: string[];
+  recipient_context?: string;
   tone_score?: number;
   readability_score?: number;
   is_favorite: boolean;
@@ -33,6 +35,8 @@ export interface CreateEmailHistoryData {
   cold_email_content: string;
   follow_up_content: string;
   subject_lines?: string[];
+  icebreakers?: string[];
+  recipient_context?: string;
   tone_score?: number;
   readability_score?: number;
 }
@@ -52,7 +56,8 @@ export const createEmailHistory = async (data: CreateEmailHistoryData): Promise<
       .insert({
         ...data,
         user_id: user.id, // Ensure user_id is set for RLS policy
-        subject_lines: data.subject_lines || []
+        subject_lines: data.subject_lines || [],
+        icebreakers: data.icebreakers || []
       })
       .select()
       .single();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Clock, Search, Filter, Download, Star, Copy, Check, Trash2, 
-  BarChart3, Heart, TrendingUp, Mail, Eye, Edit3 
+  BarChart3, Heart, TrendingUp, Mail, Eye, Edit3, Lightbulb 
 } from 'lucide-react';
 import { copyToClipboard } from '../../utils/clipboard';
 import { 
@@ -28,6 +28,7 @@ const EmailHistory: React.FC = () => {
   } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [expandedIcebreakers, setExpandedIcebreakers] = useState<{ [key: string]: boolean }>({});
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -90,6 +91,13 @@ const EmailHistory: React.FC = () => {
     }
   };
 
+  const toggleIcebreakers = (emailId: string) => {
+    setExpandedIcebreakers(prev => ({
+      ...prev,
+      [emailId]: !prev[emailId]
+    }));
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
@@ -101,10 +109,10 @@ const EmailHistory: React.FC = () => {
 
   const exportEmails = () => {
     const csvContent = emails.map(email => 
-      `"${email.recipient_name}","${email.recipient_company || ''}","${email.purpose}","${email.tone}","${email.created_at}","${email.cold_email_content.replace(/"/g, '""')}"`
+      `"${email.recipient_name}","${email.recipient_company || ''}","${email.purpose}","${email.tone}","${email.created_at}","${email.cold_email_content.replace(/"/g, '""')}","${email.icebreakers?.join('; ') || ''}","${email.recipient_context || ''}"`
     ).join('\n');
     
-    const blob = new Blob([`Recipient,Company,Purpose,Tone,Date,Content\n${csvContent}`], { type: 'text/csv' });
+    const blob = new Blob([`Recipient,Company,Purpose,Tone,Date,Content,Icebreakers,Context\n${csvContent}`], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -123,7 +131,7 @@ const EmailHistory: React.FC = () => {
           <div>
             <h3 className="text-xl font-semibold text-white">Email History</h3>
             <p className="text-gray-300 text-sm">
-              Complete email history with unlimited access
+              Complete email history with unlimited access + AI icebreakers
             </p>
           </div>
         </div>
@@ -255,6 +263,7 @@ const EmailHistory: React.FC = () => {
                     <span>{formatDate(email.created_at)}</span>
                     {email.industry && <span>Industry: {email.industry}</span>}
                     {email.urgency && <span>Priority: {email.urgency}</span>}
+                    {email.recipient_context && <span>Has Context</span>}
                   </div>
                 </div>
                 
@@ -299,6 +308,53 @@ const EmailHistory: React.FC = () => {
                   </button>
                 </div>
               </div>
+
+              {/* AI Icebreakers Section */}
+              {email.icebreakers && email.icebreakers.length > 0 && (
+                <div className="mb-3">
+                  <button
+                    onClick={() => toggleIcebreakers(email.id)}
+                    className="flex items-center text-yellow-400 hover:text-yellow-300 transition-colors text-sm font-medium mb-2"
+                  >
+                    <Lightbulb className="w-4 h-4 mr-1" />
+                    AI Icebreakers ({email.icebreakers.length})
+                    <span className="ml-1">{expandedIcebreakers[email.id] ? '▼' : '▶'}</span>
+                  </button>
+                  
+                  {expandedIcebreakers[email.id] && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">
+                      {email.icebreakers.map((icebreaker, index) => (
+                        <div key={index} className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-2">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-yellow-300 text-xs font-medium">
+                              {index === 0 ? 'Direct' : index === 1 ? 'Question' : 'Insight'}
+                            </span>
+                            <button
+                              onClick={() => handleCopy(icebreaker, `icebreaker-${email.id}-${index}`)}
+                              className={`text-xs px-1 py-0.5 rounded transition-all ${
+                                copiedStates[`icebreaker-${email.id}-${index}`]
+                                  ? 'bg-green-600 text-white'
+                                  : 'bg-white/20 text-gray-300 hover:bg-white/30'
+                              }`}
+                            >
+                              {copiedStates[`icebreaker-${email.id}-${index}`] ? '✓' : 'Copy'}
+                            </button>
+                          </div>
+                          <p className="text-yellow-200 text-xs leading-relaxed">{icebreaker}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Context Display */}
+              {email.recipient_context && (
+                <div className="mb-3 p-2 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                  <div className="text-blue-300 text-xs font-medium mb-1">Personal Context Used:</div>
+                  <p className="text-blue-200 text-xs">{email.recipient_context}</p>
+                </div>
+              )}
               
               <div className="bg-black/20 rounded-lg p-3 border border-gray-600">
                 <p className="text-gray-200 text-sm line-clamp-3">
