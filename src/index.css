@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Set Inter as the default font */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
 /* Custom animations */
 @keyframes fade-in {
   from {
@@ -34,12 +43,30 @@
   }
 }
 
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 @keyframes spin-slow {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
@@ -53,6 +80,11 @@
 
 .animate-slide-up.delay-200 {
   animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+.animate-slide-up.delay-300 {
+  animation-delay: 0.3s;
   animation-fill-mode: both;
 }
 
@@ -71,8 +103,21 @@
   animation: gradient 3s ease infinite;
 }
 
+.animate-gradient-x {
+  background-size: 300% 300%;
+  animation: gradient-x 4s ease infinite;
+}
+
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.bg-300% {
+  background-size: 300% 300%;
 }
 
 /* Smooth scrolling */
@@ -86,14 +131,55 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(148, 163, 184, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(147, 51, 234, 0.5);
+  background: rgba(59, 130, 246, 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(147, 51, 234, 0.7);
+  background: rgba(59, 130, 246, 0.7);
+}
+
+/* Enhanced button hover effects */
+.group:hover .group-hover\:translate-x-1 {
+  transform: translateX(0.25rem);
+}
+
+/* Improved focus states */
+.focus\:ring-2:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Better text rendering */
+.text-slate-800,
+.text-slate-700,
+.text-slate-600 {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Gradient text improvements */
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Card hover effects */
+.hover\:shadow-xl:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Backdrop blur improvements */
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px);
+}
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
 }
