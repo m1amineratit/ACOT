@@ -64,7 +64,7 @@ const LandingPage: React.FC = () => {
               </Link>
               <Link
                 to="/signup"
-                className="px-4 py-3.5 bg-gradient-to-r from-blue-500 to-violet-600 text-white rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-90 n shadow-lg hover:shadow-xl font-small"
+                className="px-2 py-3.5 bg-gradient-to-r from-blue-500 to-violet-600 text-white rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-90 n shadow-lg hover:shadow-xl font-small"
               >
                 Get Started Free
               </Link>
