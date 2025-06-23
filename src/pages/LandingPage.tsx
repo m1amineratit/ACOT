@@ -55,7 +55,7 @@ const LandingPage: React.FC = () => {
               <a href="#testimonials" className="text-slate-600 hover:text-blue-600 transition-colors font-medium">Reviews</a>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-5">
               <Link
                 to="/login"
                 className="text-slate-600 hover:text-blue-600 transition-colors font-medium"
@@ -64,7 +64,7 @@ const LandingPage: React.FC = () => {
               </Link>
               <Link
                 to="/signup"
-                className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-violet-600 text-white rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
+                className="px-5 py-3.5 bg-gradient-to-r from-blue-500 to-violet-600 text-white rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-95 shadow-lg hover:shadow-xl font-medium"
               >
                 Get Started Free
               </Link>
