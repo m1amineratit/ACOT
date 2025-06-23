@@ -101,7 +101,7 @@ npm run dev
 ```env
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-VITE_OPENROUTER_API_KEY=your_openrouter_api_key
+VITE_OPENROUTER_API_KEY=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
 ```
 
 ### Google OAuth Setup (Optional)
