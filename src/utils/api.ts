@@ -34,7 +34,7 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
     // Create the prompt for AI generation
     const prompt = createEmailPrompt(formData, includeAdvancedFeatures);
     
-    // Call OpenRouter API
+    // Call OpenRouter API with free Mistral model
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -44,7 +44,7 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
         'X-Title': 'AI Cold Outreach Tool'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3.5-sonnet',
+        model: 'mistralai/mistral-7b-instruct',
         messages: [
           {
             role: 'system',

@@ -71,7 +71,7 @@ Subject: [subject line]
           'X-Title': 'AI Cold Outreach Tool'
         },
         body: JSON.stringify({
-          model: 'anthropic/claude-3.5-sonnet',
+          model: 'mistralai/mistral-7b-instruct',
           messages: [
             {
               role: 'system',
@@ -111,53 +111,53 @@ Subject: [subject line]
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden">
+      <div className="bg-white/90 backdrop-blur-lg rounded-2xl border border-blue-100/50 shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/20">
+        <div className="flex items-center justify-between p-6 border-b border-blue-100/50">
           <div className="flex items-center">
             <Sparkles className="w-6 h-6 text-purple-400 mr-3" />
             <div>
-              <h2 className="text-2xl font-bold text-white">AI Email Preview</h2>
-              <p className="text-gray-300 text-sm">Real-time AI-generated preview of your email</p>
+              <h2 className="text-2xl font-bold text-slate-800">AI Email Preview</h2>
+              <p className="text-slate-600 text-sm">Real-time AI-generated preview of your email</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-slate-400 hover:text-slate-600 transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Form Summary */}
-        <div className="p-6 border-b border-white/20 bg-white/5">
+        <div className="p-6 border-b border-blue-100/50 bg-blue-50/30">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div className="flex items-center">
               <User className="w-4 h-4 text-blue-400 mr-2" />
               <div>
-                <div className="text-gray-400">Sender</div>
-                <div className="text-white font-medium">{formData.name || 'Not set'}</div>
+                <div className="text-slate-500">Sender</div>
+                <div className="text-slate-800 font-medium">{formData.name || 'Not set'}</div>
               </div>
             </div>
             <div className="flex items-center">
               <Mail className="w-4 h-4 text-green-400 mr-2" />
               <div>
-                <div className="text-gray-400">Recipient</div>
-                <div className="text-white font-medium">{formData.recipient || 'Not set'}</div>
+                <div className="text-slate-500">Recipient</div>
+                <div className="text-slate-800 font-medium">{formData.recipient || 'Not set'}</div>
               </div>
             </div>
             <div className="flex items-center">
               <Target className="w-4 h-4 text-purple-400 mr-2" />
               <div>
-                <div className="text-gray-400">Tone</div>
-                <div className="text-white font-medium">{formData.tone}</div>
+                <div className="text-slate-500">Tone</div>
+                <div className="text-slate-800 font-medium">{formData.tone}</div>
               </div>
             </div>
             <div className="flex items-center">
               <Clock className="w-4 h-4 text-orange-400 mr-2" />
               <div>
-                <div className="text-gray-400">Priority</div>
-                <div className="text-white font-medium capitalize">{formData.urgency || 'Medium'}</div>
+                <div className="text-slate-500">Priority</div>
+                <div className="text-slate-800 font-medium capitalize">{formData.urgency || 'Medium'}</div>
               </div>
             </div>
           </div>
@@ -169,14 +169,14 @@ Subject: [subject line]
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-                <p className="text-gray-300">AI generating real-time preview...</p>
-                <p className="text-gray-400 text-sm mt-2">Using OpenRouter API with Claude 3.5 Sonnet</p>
+                <p className="text-slate-600">AI generating real-time preview...</p>
+                <p className="text-slate-500 text-sm mt-2">Using OpenRouter API with Mistral 7B</p>
               </div>
             </div>
           ) : error ? (
             <div className="text-center py-12">
-              <div className="text-red-400 mb-4">⚠️ Preview Generation Failed</div>
-              <p className="text-gray-300 mb-4">{error}</p>
+              <div className="text-red-600 mb-4">⚠️ Preview Generation Failed</div>
+              <p className="text-slate-600 mb-4">{error}</p>
               <button
                 onClick={generateAIPreview}
                 className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
@@ -185,20 +185,20 @@ Subject: [subject line]
               </button>
             </div>
           ) : (
-            <div className="bg-gray-900/50 rounded-lg p-6 border border-gray-700">
-              <div className="mb-4 pb-4 border-b border-gray-600">
+            <div className="bg-blue-50/50 rounded-lg p-6 border border-blue-200/50">
+              <div className="mb-4 pb-4 border-b border-blue-200/50">
                 <div className="flex items-center justify-between">
-                  <div className="text-sm text-gray-400 mb-2">AI-Generated Email Preview</div>
+                  <div className="text-sm text-slate-500 mb-2">AI-Generated Email Preview</div>
                   <div className="flex items-center px-2 py-1 bg-purple-500/20 rounded-full">
                     <Sparkles className="w-3 h-3 text-purple-400 mr-1" />
-                    <span className="text-purple-300 text-xs font-medium">Live AI Generation</span>
+                    <span className="text-purple-600 text-xs font-medium">Live AI Generation</span>
                   </div>
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-slate-400">
                   Generated in real-time using OpenRouter API. The final email will be fully detailed and optimized.
                 </div>
               </div>
-              <pre className="text-gray-200 whitespace-pre-wrap text-sm leading-relaxed font-sans">
+              <pre className="text-slate-700 whitespace-pre-wrap text-sm leading-relaxed font-sans">
                 {previewEmail}
               </pre>
             </div>
@@ -206,9 +206,9 @@ Subject: [subject line]
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-white/20 bg-white/5">
+        <div className="p-6 border-t border-blue-100/50 bg-blue-50/30">
           <div className="flex items-center justify-between">
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-slate-500">
               This AI preview shows how your email will look. Generate the full version for complete content.
             </div>
             <div className="flex gap-3">

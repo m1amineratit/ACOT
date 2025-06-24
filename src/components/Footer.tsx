@@ -3,7 +3,7 @@ import { Heart, Github, Sparkles } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-white/10">
+    <footer className="py-12 px-4 sm:px-6 lg:px-8 bg-slate-800 border-t border-slate-700">
       <div className="max-w-7xl mx-auto text-center">
         <div className="flex items-center justify-center mb-4">
           <span className="text-gray-300 text-lg">Built with</span>

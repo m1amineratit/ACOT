@@ -33,9 +33,9 @@ const ToneAnalyzer: React.FC<ToneAnalyzerProps> = ({ email }) => {
   const overallScore = Math.round((analysis.readabilityScore + analysis.professionalismScore + analysis.engagementScore + analysis.clarityScore) / 4);
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-400';
-    if (score >= 60) return 'text-yellow-400';
-    return 'text-red-400';
+    if (score >= 80) return 'text-green-600';
+    if (score >= 60) return 'text-yellow-600';
+    return 'text-red-600';
   };
 
   const getScoreBg = (score: number) => {
@@ -52,12 +52,12 @@ const ToneAnalyzer: React.FC<ToneAnalyzerProps> = ({ email }) => {
   ];
 
   return (
-    <div className="mt-8 bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-xl">
+    <div className="mt-8 bg-white/80 backdrop-blur-lg rounded-2xl p-6 border border-blue-100/50 shadow-xl">
       <div className="flex items-center mb-6">
         <BarChart3 className="w-6 h-6 text-purple-400 mr-3" />
-        <h3 className="text-xl font-semibold text-white">Email Analysis</h3>
+        <h3 className="text-xl font-semibold text-slate-800">Email Analysis</h3>
         <div className="ml-auto flex items-center">
-          <span className="text-sm text-gray-300 mr-2">Overall Score:</span>
+          <span className="text-sm text-slate-600 mr-2">Overall Score:</span>
           <div className={`text-2xl font-bold ${getScoreColor(overallScore)}`}>
             {overallScore}%
           </div>
@@ -66,12 +66,12 @@ const ToneAnalyzer: React.FC<ToneAnalyzerProps> = ({ email }) => {
 
       {/* Score Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-gray-900/50 rounded-lg p-4 text-center">
+        <div className="bg-blue-50/50 rounded-lg p-4 text-center">
           <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysis.readabilityScore)}`}>
             {analysis.readabilityScore}%
           </div>
-          <div className="text-gray-300 text-sm">Readability</div>
-          <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+          <div className="text-slate-600 text-sm">Readability</div>
+          <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
             <div 
               className={`h-2 rounded-full ${getScoreBg(analysis.readabilityScore)}`}
               style={{ width: `${analysis.readabilityScore}%` }}
@@ -79,12 +79,12 @@ const ToneAnalyzer: React.FC<ToneAnalyzerProps> = ({ email }) => {
           </div>
         </div>
 
-        <div className="bg-gray-900/50 rounded-lg p-4 text-center">
+        <div className="bg-blue-50/50 rounded-lg p-4 text-center">
           <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysis.professionalismScore)}`}>
             {analysis.professionalismScore}%
           </div>
-          <div className="text-gray-300 text-sm">Professional</div>
-          <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+          <div className="text-slate-600 text-sm">Professional</div>
+          <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
             <div 
               className={`h-2 rounded-full ${getScoreBg(analysis.professionalismScore)}`}
               style={{ width: `${analysis.professionalismScore}%` }}
@@ -92,12 +92,12 @@ const ToneAnalyzer: React.FC<ToneAnalyzerProps> = ({ email }) => {
           </div>
         </div>
 
-        <div className="bg-gray-900/50 rounded-lg p-4 text-center">
+        <div className="bg-blue-50/50 rounded-lg p-4 text-center">
           <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysis.engagementScore)}`}>
             {analysis.engagementScore}%
           </div>
-          <div className="text-gray-300 text-sm">Engagement</div>
-          <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+          <div className="text-slate-600 text-sm">Engagement</div>
+          <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
             <div 
               className={`h-2 rounded-full ${getScoreBg(analysis.engagementScore)}`}
               style={{ width: `${analysis.engagementScore}%` }}
@@ -105,12 +105,12 @@ const ToneAnalyzer: React.FC<ToneAnalyzerProps> = ({ email }) => {
           </div>
         </div>
 
-        <div className="bg-gray-900/50 rounded-lg p-4 text-center">
+        <div className="bg-blue-50/50 rounded-lg p-4 text-center">
           <div className={`text-2xl font-bold mb-1 ${getScoreColor(analysis.clarityScore)}`}>
             {analysis.clarityScore}%
           </div>
-          <div className="text-gray-300 text-sm">Clarity</div>
-          <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+          <div className="text-slate-600 text-sm">Clarity</div>
+          <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
             <div 
               className={`h-2 rounded-full ${getScoreBg(analysis.clarityScore)}`}
               style={{ width: `${analysis.clarityScore}%` }}
@@ -122,16 +122,16 @@ const ToneAnalyzer: React.FC<ToneAnalyzerProps> = ({ email }) => {
       {/* Statistics */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-blue-300 mb-1">{analysis.wordCount}</div>
-          <div className="text-blue-200 text-sm">Words</div>
+          <div className="text-2xl font-bold text-blue-700 mb-1">{analysis.wordCount}</div>
+          <div className="text-blue-600 text-sm">Words</div>
         </div>
         <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-green-300 mb-1">{analysis.sentenceCount}</div>
-          <div className="text-green-200 text-sm">Sentences</div>
+          <div className="text-2xl font-bold text-green-700 mb-1">{analysis.sentenceCount}</div>
+          <div className="text-green-600 text-sm">Sentences</div>
         </div>
         <div className="bg-purple-500/20 border border-purple-500/30 rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-purple-300 mb-1">{analysis.avgWordsPerSentence}</div>
-          <div className="text-purple-200 text-sm">Avg Words/Sentence</div>
+          <div className="text-2xl font-bold text-purple-700 mb-1">{analysis.avgWordsPerSentence}</div>
+          <div className="text-purple-600 text-sm">Avg Words/Sentence</div>
         </div>
       </div>
 
@@ -139,14 +139,14 @@ const ToneAnalyzer: React.FC<ToneAnalyzerProps> = ({ email }) => {
       {suggestions.length > 0 && (
         <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
           <div className="flex items-center mb-3">
-            <AlertTriangle className="w-5 h-5 text-yellow-400 mr-2" />
-            <h4 className="text-yellow-300 font-medium">Suggestions for Improvement</h4>
+            <AlertTriangle className="w-5 h-5 text-yellow-600 mr-2" />
+            <h4 className="text-yellow-700 font-medium">Suggestions for Improvement</h4>
           </div>
           <ul className="space-y-2">
             {suggestions.map((suggestion, index) => (
               <li key={index} className="flex items-start">
-                <Target className="w-4 h-4 text-yellow-400 mr-2 mt-0.5 flex-shrink-0" />
-                <span className="text-yellow-200 text-sm">{suggestion}</span>
+                <Target className="w-4 h-4 text-yellow-600 mr-2 mt-0.5 flex-shrink-0" />
+                <span className="text-yellow-800 text-sm">{suggestion}</span>
               </li>
             ))}
           </ul>
@@ -156,8 +156,8 @@ const ToneAnalyzer: React.FC<ToneAnalyzerProps> = ({ email }) => {
       {suggestions.length === 0 && (
         <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
           <div className="flex items-center">
-            <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
-            <span className="text-green-300 font-medium">Great job! Your email looks excellent.</span>
+            <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
+            <span className="text-green-700 font-medium">Great job! Your email looks excellent.</span>
           </div>
         </div>
       )}

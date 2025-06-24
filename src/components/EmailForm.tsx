@@ -141,13 +141,13 @@ const EmailForm: React.FC = () => {
     <>
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
+          <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-lg rounded-2xl p-8 border border-blue-100/50 shadow-2xl">
             {/* API Configuration Warning */}
             {!isApiConfigured && (
               <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
                 <div className="flex items-center">
                   <AlertTriangle className="w-5 h-5 text-red-400 mr-2" />
-                  <p className="text-red-300 font-medium">
+                  <p className="text-red-600 font-medium">
                     OpenRouter API key not configured. Please add VITE_OPENROUTER_API_KEY to your environment variables.
                   </p>
                 </div>
@@ -157,8 +157,8 @@ const EmailForm: React.FC = () => {
             {/* New Icebreaker Feature Banner */}
             <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-lg">
               <div className="flex items-center">
-                <Lightbulb className="w-5 h-5 text-yellow-400 mr-2" />
-                <p className="text-yellow-300 font-medium">
+                <Lightbulb className="w-5 h-5 text-yellow-600 mr-2" />
+                <p className="text-yellow-700 font-medium">
                   🆕 NEW: AI Icebreaker Generator - Add personal context for ultra-personalized opening lines!
                 </p>
               </div>
@@ -167,8 +167,8 @@ const EmailForm: React.FC = () => {
             {/* All Features Available Banner */}
             <div className="mb-6 p-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-lg">
               <div className="flex items-center">
-                <Sparkles className="w-5 h-5 text-yellow-400 mr-2" />
-                <p className="text-purple-300 font-medium">
+                <Sparkles className="w-5 h-5 text-yellow-600 mr-2" />
+                <p className="text-purple-700 font-medium">
                   All emails generated dynamically using AI - no templates, just pure AI creativity!
                 </p>
               </div>
@@ -179,14 +179,14 @@ const EmailForm: React.FC = () => {
               <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
                 <div className="flex items-center">
                   <AlertTriangle className="w-5 h-5 text-red-400 mr-2" />
-                  <p className="text-red-300">{apiError}</p>
+                  <p className="text-red-600">{apiError}</p>
                 </div>
               </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
                   Your Name *
                 </label>
                 <input
@@ -195,16 +195,16 @@ const EmailForm: React.FC = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
-                    errors.name ? 'border-red-500' : 'border-white/30'
+                  className={`w-full px-4 py-3 bg-white/80 border rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
+                    errors.name ? 'border-red-500' : 'border-blue-200/50'
                   }`}
                   placeholder="Enter your full name"
                 />
-                {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
+                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
               </div>
 
               <div>
-                <label htmlFor="recipient" className="block text-sm font-medium text-gray-200 mb-2">
+                <label htmlFor="recipient" className="block text-sm font-medium text-slate-700 mb-2">
                   Who are you reaching out to? *
                 </label>
                 <input
@@ -213,17 +213,17 @@ const EmailForm: React.FC = () => {
                   name="recipient"
                   value={formData.recipient}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
-                    errors.recipient ? 'border-red-500' : 'border-white/30'
+                  className={`w-full px-4 py-3 bg-white/80 border rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all ${
+                    errors.recipient ? 'border-red-500' : 'border-blue-200/50'
                   }`}
                   placeholder="e.g., John Smith, CEO of TechCorp"
                 />
-                {errors.recipient && <p className="text-red-400 text-sm mt-1">{errors.recipient}</p>}
+                {errors.recipient && <p className="text-red-500 text-sm mt-1">{errors.recipient}</p>}
               </div>
             </div>
 
             <div className="mb-6">
-              <label htmlFor="purpose" className="block text-sm font-medium text-gray-200 mb-2">
+              <label htmlFor="purpose" className="block text-sm font-medium text-slate-700 mb-2">
                 Reason/Purpose of Email *
               </label>
               <textarea
@@ -232,21 +232,21 @@ const EmailForm: React.FC = () => {
                 value={formData.purpose}
                 onChange={handleInputChange}
                 rows={4}
-                className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all resize-none ${
-                  errors.purpose ? 'border-red-500' : 'border-white/30'
+                className={`w-full px-4 py-3 bg-white/80 border rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all resize-none ${
+                  errors.purpose ? 'border-red-500' : 'border-blue-200/50'
                 }`}
                 placeholder="Describe why you're reaching out and what you hope to achieve..."
               />
-              {errors.purpose && <p className="text-red-400 text-sm mt-1">{errors.purpose}</p>}
+              {errors.purpose && <p className="text-red-500 text-sm mt-1">{errors.purpose}</p>}
             </div>
 
             {/* NEW: Recipient Context Field for Icebreakers */}
             <div className="mb-6">
-              <label htmlFor="recipientContext" className="block text-sm font-medium text-gray-200 mb-2">
+              <label htmlFor="recipientContext" className="block text-sm font-medium text-slate-700 mb-2">
                 <div className="flex items-center">
-                  <Lightbulb className="w-4 h-4 text-yellow-400 mr-2" />
+                  <Lightbulb className="w-4 h-4 text-yellow-600 mr-2" />
                   Personal Context for AI Icebreakers
-                  <span className="text-yellow-400 ml-2 text-xs font-bold">NEW!</span>
+                  <span className="text-yellow-600 ml-2 text-xs font-bold">NEW!</span>
                 </div>
               </label>
               <textarea
@@ -255,28 +255,28 @@ const EmailForm: React.FC = () => {
                 value={formData.recipientContext}
                 onChange={handleInputChange}
                 rows={3}
-                className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all resize-none"
+                className="w-full px-4 py-3 bg-white/80 border border-blue-200/50 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all resize-none"
                 placeholder="e.g., 'They recently posted about AI adoption challenges on LinkedIn' or 'Their company just announced a $10M Series A funding' or 'We both attended Stanford' - AI will create personalized icebreakers from this!"
               />
-              <p className="text-gray-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs mt-1">
                 💡 Add any personal detail, recent activity, or connection point. AI will generate custom icebreakers to make your email stand out!
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label htmlFor="tone" className="block text-sm font-medium text-gray-200 mb-2">
-                  Tone <span className="text-xs text-green-300">(AI will match perfectly)</span>
+                <label htmlFor="tone" className="block text-sm font-medium text-slate-700 mb-2">
+                  Tone <span className="text-xs text-green-600">(AI will match perfectly)</span>
                 </label>
                 <select
                   id="tone"
                   name="tone"
                   value={formData.tone}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  className="w-full px-4 py-3 bg-white/80 border border-blue-200/50 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                 >
                   {toneOptions.map((option) => (
-                    <option key={option.value} value={option.value} className="bg-gray-800">
+                    <option key={option.value} value={option.value} className="bg-white">
                       {option.label} - {option.description}
                     </option>
                   ))}
@@ -284,18 +284,18 @@ const EmailForm: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="industry" className="block text-sm font-medium text-gray-200 mb-2">
-                  Industry <span className="text-xs text-green-300">(AI personalization)</span>
+                <label htmlFor="industry" className="block text-sm font-medium text-slate-700 mb-2">
+                  Industry <span className="text-xs text-green-600">(AI personalization)</span>
                 </label>
                 <select
                   id="industry"
                   name="industry"
                   value={formData.industry}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  className="w-full px-4 py-3 bg-white/80 border border-blue-200/50 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                 >
                   {industryOptions.map((option) => (
-                    <option key={option.value} value={option.value} className="bg-gray-800">
+                    <option key={option.value} value={option.value} className="bg-white">
                       {option.label}
                     </option>
                   ))}
@@ -305,9 +305,9 @@ const EmailForm: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div>
-                <label htmlFor="portfolio" className="block text-sm font-medium text-gray-200 mb-2">
+                <label htmlFor="portfolio" className="block text-sm font-medium text-slate-700 mb-2">
                   Your Portfolio or Website
-                  <span className="text-gray-400 ml-1">(optional)</span>
+                  <span className="text-slate-500 ml-1">(optional)</span>
                 </label>
                 <input
                   type="url"
@@ -315,24 +315,24 @@ const EmailForm: React.FC = () => {
                   name="portfolio"
                   value={formData.portfolio}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  className="w-full px-4 py-3 bg-white/80 border border-blue-200/50 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                   placeholder="https://yourwebsite.com"
                 />
               </div>
 
               <div>
-                <label htmlFor="urgency" className="block text-sm font-medium text-gray-200 mb-2">
-                  Priority Level <span className="text-xs text-green-300">(AI adapts tone)</span>
+                <label htmlFor="urgency" className="block text-sm font-medium text-slate-700 mb-2">
+                  Priority Level <span className="text-xs text-green-600">(AI adapts tone)</span>
                 </label>
                 <select
                   id="urgency"
                   name="urgency"
                   value={formData.urgency}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  className="w-full px-4 py-3 bg-white/80 border border-blue-200/50 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                 >
                   {urgencyOptions.map((option) => (
-                    <option key={option.value} value={option.value} className="bg-gray-800">
+                    <option key={option.value} value={option.value} className="bg-white">
                       {option.label} - {option.description}
                     </option>
                   ))}
