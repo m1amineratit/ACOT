@@ -27,12 +27,59 @@ import {
   Lightbulb,
   Globe,
   Award,
-  Rocket
+  Rocket,
+  X
 } from 'lucide-react';
 
 const LandingPage: React.FC = () => {
+  const [showBanner, setShowBanner] = React.useState(true);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden">
+      {/* Beta Banner */}
+      {showBanner && (
+        <div className="relative bg-gradient-to-r from-blue-500/90 to-violet-600/90 backdrop-blur-sm border-b border-blue-400/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center justify-center flex-1">
+                <div className="flex items-center space-x-3 text-white">
+                  <Rocket className="w-5 h-5 text-yellow-300 animate-pulse" />
+                  <span className="text-sm sm:text-base font-medium">
+                    🚀 <span className="font-bold">ColdSpark is 100% free during beta</span> — try it now before it becomes a paid SaaS!
+                  </span>
+                  <Link
+                    to="/app"
+                    className="hidden sm:inline-flex items-center px-4 py-2 bg-white/20 hover:bg-white/30 text-white font-medium rounded-lg transition-all transform hover:scale-105 border border-white/30"
+                  >
+                    Try Now
+                    <ArrowRight className="w-4 h-4 ml-1" />
+                  </Link>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => setShowBanner(false)}
+                className="text-white/80 hover:text-white transition-colors p-1"
+                aria-label="Close banner"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Mobile CTA */}
+            <div className="sm:hidden mt-2 text-center">
+              <Link
+                to="/app"
+                className="inline-flex items-center px-4 py-2 bg-white/20 hover:bg-white/30 text-white font-medium rounded-lg transition-all transform hover:scale-105 border border-white/30"
+              >
+                Try Now Free
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Navigation */}
       <nav className="relative z-50 bg-white/80 backdrop-blur-xl border-b border-blue-100/50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
