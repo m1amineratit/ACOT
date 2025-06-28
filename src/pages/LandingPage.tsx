@@ -39,9 +39,11 @@ const LandingPage: React.FC = () => {
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center space-x-3 group">
               <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-                  <Mail className="w-5 h-5 text-white" />
-                </div>
+                <img
+                  src="/508396209_1062706966037301_4833881911616339195_n.webp"
+                  alt="ColdSpark Logo"
+                  className="w-10 h-10 rounded-xl group-hover:scale-105 transition-transform"
+                />
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
@@ -57,16 +59,10 @@ const LandingPage: React.FC = () => {
 
             <div className="flex items-center space-x-3">
               <Link
-                to="/login"
-                className="text-slate-600 hover:text-blue-600 transition-colors font-small"
+                to="/"
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-violet-600 text-white rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
               >
-                Sign In
-              </Link>
-              <Link
-                to="/signup"
-                className="px-2 py-3.5 bg-gradient-to-r from-blue-500 to-violet-600 text-white rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-90 n shadow-lg hover:shadow-xl font-small"
-              >
-                Get Started Free
+                Try ColdSpark Free
               </Link>
             </div>
           </div>
@@ -89,7 +85,7 @@ const LandingPage: React.FC = () => {
               {/* Badge */}
               <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-50 to-blue-50 border border-emerald-200/50 rounded-full mb-8 animate-fade-in">
                 <Sparkles className="w-4 h-4 text-emerald-500 mr-2" />
-                <span className="text-sm font-medium text-emerald-700">100% Free - All Premium Features</span>
+                <span className="text-sm font-medium text-emerald-700">100% Free - No Login Required</span>
               </div>
 
               {/* Main headline */}
@@ -109,7 +105,7 @@ const LandingPage: React.FC = () => {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-slide-up delay-400">
                 <Link
-                  to="/signup"
+                  to="/"
                   className="group flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-500 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   <Rocket className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
@@ -465,7 +461,7 @@ const LandingPage: React.FC = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/signup"
+              to="/"
               className="group flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <Rocket className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
@@ -485,9 +481,11 @@ const LandingPage: React.FC = () => {
             {/* Brand */}
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-violet-600 rounded-xl flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-white" />
-                </div>
+                <img
+                  src="/508396209_1062706966037301_4833881911616339195_n.webp"
+                  alt="ColdSpark Logo"
+                  className="w-10 h-10 rounded-xl"
+                />
                 <span className="text-xl font-bold text-white">ColdSpark</span>
               </div>
               <p className="text-slate-400 max-w-md">
@@ -501,7 +499,7 @@ const LandingPage: React.FC = () => {
               <ul className="space-y-2">
                 <li><a href="#features" className="text-slate-400 hover:text-white transition-colors">Features</a></li>
                 <li><a href="#how-it-works" className="text-slate-400 hover:text-white transition-colors">How it Works</a></li>
-                <li><Link to="/signup" className="text-slate-400 hover:text-white transition-colors">Get Started</Link></li>
+                <li><Link to="/" className="text-slate-400 hover:text-white transition-colors">Get Started</Link></li>
               </ul>
             </div>
 
@@ -510,7 +508,7 @@ const LandingPage: React.FC = () => {
               <h4 className="text-white font-semibold mb-4">Company</h4>
               <ul className="space-y-2">
                 <li><a href="#testimonials" className="text-slate-400 hover:text-white transition-colors">Reviews</a></li>
-                <li><Link to="/login" className="text-slate-400 hover:text-white transition-colors">Sign In</Link></li>
+                <li><Link to="/" className="text-slate-400 hover:text-white transition-colors">Try Free</Link></li>
               </ul>
             </div>
           </div>

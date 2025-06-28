@@ -83,7 +83,7 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
     // Parse the generated content
     const result = parseGeneratedContent(generatedContent, includeAdvancedFeatures);
 
-    // Save to database
+    // Save to database only if user is authenticated
     try {
       const recipientParts = recipient.split(',');
       const recipientName = recipientParts[0].trim();
@@ -106,8 +106,8 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
         recipient_context: recipientContext
       });
     } catch (error) {
-      console.error('Failed to save email history:', error);
-      // Don't fail the generation if saving fails
+      console.log('Email history not saved (user may not be authenticated):', error);
+      // Don't fail the generation if saving fails - user might not be logged in
     }
 
     return result;

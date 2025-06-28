@@ -46,8 +46,9 @@ export const createEmailHistory = async (data: CreateEmailHistoryData): Promise<
     // Get the current authenticated user
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     
+    // If no user is authenticated, skip saving to database
     if (userError || !user) {
-      console.error('Error getting authenticated user:', userError);
+      console.log('No authenticated user, skipping email history save');
       return null;
     }
 
@@ -83,6 +84,14 @@ export const getEmailHistory = async (
   favoritesOnly?: boolean
 ): Promise<{ data: EmailHistoryRecord[]; count: number } | null> => {
   try {
+    // Check if user is authenticated
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    
+    if (userError || !user) {
+      console.log('No authenticated user, returning empty email history');
+      return { data: [], count: 0 };
+    }
+
     let query = supabase
       .from('email_history')
       .select('*', { count: 'exact' })
@@ -197,6 +206,19 @@ export const getEmailStats = async (): Promise<{
   topTone: string;
 } | null> => {
   try {
+    // Check if user is authenticated
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    
+    if (userError || !user) {
+      console.log('No authenticated user, returning empty stats');
+      return {
+        totalEmails: 0,
+        favoriteEmails: 0,
+        responseRate: 0,
+        topTone: 'Professional'
+      };
+    }
+
     const { data, error } = await supabase
       .from('email_history')
       .select('tone, is_favorite, response_received, response_rate');
