@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LogOut, User, LogIn } from 'lucide-react';
+import { LogOut, User, LogIn, Send } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Header: React.FC = () => {
@@ -36,23 +36,21 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="relative">
-              <img
-                src="/508396209_1062706966037301_4833881911616339195_n.webp"
-                alt="ColdSpark Logo"
-                className="w-10 h-10 rounded-xl group-hover:scale-105 transition-transform"
-              />
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <Send className="w-5 h-5 text-white" />
+              </div>
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
-              ColdSpark
+            <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+              ColdSendr
             </span>
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/app" className="text-slate-600 hover:text-blue-600 transition-colors">
+            <Link to="/app" className="text-slate-600 hover:text-emerald-600 transition-colors">
               App
             </Link>
-            <Link to="/" className="text-slate-600 hover:text-blue-600 transition-colors">
+            <Link to="/" className="text-slate-600 hover:text-emerald-600 transition-colors">
               About
             </Link>
           </nav>
@@ -65,10 +63,10 @@ const Header: React.FC = () => {
                     <img
                       src={user.avatar_url}
                       alt={getDisplayName()}
-                      className="w-8 h-8 rounded-full border-2 border-blue-200/50"
+                      className="w-8 h-8 rounded-full border-2 border-emerald-200/50"
                     />
                   ) : (
-                    <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                    <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                       {getInitials(getDisplayName())}
                     </div>
                   )}
@@ -82,7 +80,7 @@ const Header: React.FC = () => {
                 
                 <button
                   onClick={signOut}
-                  className="flex items-center px-4 py-2 bg-white/80 text-slate-600 rounded-lg hover:bg-white transition-all border border-blue-200/50"
+                  className="flex items-center px-4 py-2 bg-white/80 text-slate-600 rounded-lg hover:bg-white transition-all border border-emerald-200/50"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Sign Out
@@ -92,7 +90,7 @@ const Header: React.FC = () => {
               <div className="flex items-center space-x-4">
                 <button
                   onClick={handleGoogleSignIn}
-                  className="flex items-center px-4 py-2 bg-white/80 text-slate-600 rounded-lg hover:bg-white transition-all border border-blue-200/50"
+                  className="flex items-center px-4 py-2 bg-white/80 text-slate-600 rounded-lg hover:bg-white transition-all border border-emerald-200/50"
                 >
                   <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
                     <path

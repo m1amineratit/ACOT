@@ -41,7 +41,7 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         'HTTP-Referer': window.location.origin,
-        'X-Title': 'AI Cold Outreach Tool'
+        'X-Title': 'ColdSendr AI Cold Outreach Tool'
       },
       body: JSON.stringify({
         model: 'mistralai/mistral-7b-instruct',
@@ -96,7 +96,7 @@ export const generateEmails = async (formData: FormData, includeAdvancedFeatures
         tone,
         industry,
         urgency: urgency || 'medium',
-        template_used: 'AI Generated',
+        template_used: 'ColdSendr AI Generated',
         cold_email_content: result.coldEmail,
         follow_up_content: result.followUp,
         subject_lines: result.subjectLines,

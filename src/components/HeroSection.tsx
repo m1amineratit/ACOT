@@ -1,25 +1,23 @@
 import React from 'react';
-import { Zap, Target, Sparkles } from 'lucide-react';
+import { Zap, Target, Sparkles, Send } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   return (
     <section className="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8">
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-800/20 to-blue-800/20 backdrop-blur-3xl"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-emerald-800/20 to-blue-800/20 backdrop-blur-3xl"></div>
       
       <div className="relative max-w-7xl mx-auto text-center">
         <div className="mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6">
-            <img
-              src="/508396209_1062706966037301_4833881911616339195_n.webp"
-              alt="ColdSpark Logo"
-              className="w-16 h-16 rounded-2xl shadow-lg"
-            />
+            <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <Send className="w-8 h-8 text-white" />
+            </div>
           </div>
         </div>
         
         <h1 className="text-5xl md:text-7xl font-bold text-slate-800 mb-6 leading-tight">
           AI Cold Outreach
-          <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent block">
+          <span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent block">
             100% Free 
           </span>
         </h1>
@@ -30,8 +28,8 @@ const HeroSection: React.FC = () => {
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="flex flex-col items-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-blue-100/50">
-            <Target className="w-8 h-8 text-purple-400 mb-4" />
+          <div className="flex flex-col items-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-emerald-100/50">
+            <Target className="w-8 h-8 text-emerald-400 mb-4" />
             <h3 className="text-lg font-semibold text-slate-800 mb-2">7 Advanced Tones</h3>
             <p className="text-slate-600 text-center">Professional, friendly, persuasive, empathetic, and more</p>
           </div>
@@ -42,8 +40,8 @@ const HeroSection: React.FC = () => {
             <p className="text-slate-600 text-center">No limits on emails, voice messages, or features</p>
           </div>
           
-          <div className="flex flex-col items-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-blue-100/50">
-            <Sparkles className="w-8 h-8 text-green-400 mb-4" />
+          <div className="flex flex-col items-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-emerald-100/50">
+            <Sparkles className="w-8 h-8 text-emerald-400 mb-4" />
             <h3 className="text-lg font-semibold text-slate-800 mb-2">Advanced Analytics</h3>
             <p className="text-slate-600 text-center">Email scoring, history, and optimization tools</p>
           </div>

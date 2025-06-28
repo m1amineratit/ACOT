@@ -35,17 +35,17 @@ const LandingPage: React.FC = () => {
   const [showBanner, setShowBanner] = React.useState(true);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-blue-100 overflow-hidden">
       {/* Beta Banner */}
       {showBanner && (
-        <div className="relative bg-gradient-to-r from-blue-500/90 to-violet-600/90 backdrop-blur-sm border-b border-blue-400/30">
+        <div className="relative bg-gradient-to-r from-emerald-500/90 to-blue-600/90 backdrop-blur-sm border-b border-emerald-400/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-center flex-1">
                 <div className="flex items-center space-x-3 text-white">
                   <Rocket className="w-5 h-5 text-yellow-300 animate-pulse" />
                   <span className="text-sm sm:text-base font-medium">
-                    🚀 <span className="font-bold">ColdSpark is 100% free during beta</span> — try it now before it becomes a paid SaaS!
+                    🚀 <span className="font-bold">ColdSendr is 100% free during beta</span> — try it now before it becomes a paid SaaS!
                   </span>
                   <Link
                     to="/app"
@@ -81,35 +81,33 @@ const LandingPage: React.FC = () => {
       )}
 
       {/* Navigation */}
-      <nav className="relative z-50 bg-white/80 backdrop-blur-xl border-b border-blue-100/50 shadow-sm">
+      <nav className="relative z-50 bg-white/80 backdrop-blur-xl border-b border-emerald-100/50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center space-x-3 group">
               <div className="relative">
-                <img
-                  src="/508396209_1062706966037301_4833881911616339195_n.webp"
-                  alt="ColdSpark Logo"
-                  className="w-10 h-10 rounded-xl group-hover:scale-105 transition-transform"
-                />
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                  <Send className="w-5 h-5 text-white" />
+                </div>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
-                ColdSpark
+              <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                ColdSendr
               </span>
             </Link>
 
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-slate-600 hover:text-blue-600 transition-colors font-medium">Features</a>
-              <a href="#how-it-works" className="text-slate-600 hover:text-blue-600 transition-colors font-medium">How it Works</a>
-              <a href="#testimonials" className="text-slate-600 hover:text-blue-600 transition-colors font-medium">Reviews</a>
+              <a href="#features" className="text-slate-600 hover:text-emerald-600 transition-colors font-medium">Features</a>
+              <a href="#how-it-works" className="text-slate-600 hover:text-emerald-600 transition-colors font-medium">How it Works</a>
+              <a href="#testimonials" className="text-slate-600 hover:text-emerald-600 transition-colors font-medium">Reviews</a>
             </div>
 
             <div className="flex items-center space-x-3">
               <Link
                 to="/app"
-                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-violet-600 text-white rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
+                className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-blue-600 text-white rounded-xl hover:from-emerald-600 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
               >
-                Try ColdSpark Free
+                Try ColdSendr Free
               </Link>
             </div>
           </div>
@@ -120,9 +118,9 @@ const LandingPage: React.FC = () => {
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-200/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-128 h-128 bg-gradient-to-r from-blue-100/20 to-violet-100/20 rounded-full blur-3xl animate-spin-slow"></div>
+          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-emerald-200/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-128 h-128 bg-gradient-to-r from-emerald-100/20 to-blue-100/20 rounded-full blur-3xl animate-spin-slow"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto">
@@ -138,7 +136,7 @@ const LandingPage: React.FC = () => {
               {/* Main headline */}
               <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-800 mb-6 leading-tight animate-slide-up">
                 Write cold emails that
-                <span className="bg-gradient-to-r from-blue-600 via-violet-600 to-blue-600 bg-clip-text text-transparent block animate-gradient bg-300% animate-gradient-x">
+                <span className="bg-gradient-to-r from-emerald-600 via-blue-600 to-emerald-600 bg-clip-text text-transparent block animate-gradient bg-300% animate-gradient-x">
                   actually get replies
                 </span>
               </h1>
@@ -153,7 +151,7 @@ const LandingPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-slide-up delay-400">
                 <Link
                   to="/app"
-                  className="group flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-500 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="group flex items-center justify-center px-8 py-4 bg-gradient-to-r from-emerald-500 to-blue-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   <Rocket className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
                   Try It Now - No Signup Required
@@ -186,25 +184,25 @@ const LandingPage: React.FC = () => {
             <div className="relative animate-slide-up delay-300">
               <div className="relative">
                 {/* Main illustration container */}
-                <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl p-8 shadow-2xl border border-blue-100">
+                <div className="bg-gradient-to-br from-white to-emerald-50 rounded-3xl p-8 shadow-2xl border border-emerald-100">
                   {/* Email mockup */}
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3 mb-6">
                       <div className="w-3 h-3 bg-red-400 rounded-full"></div>
                       <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
                       <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                      <div className="ml-4 text-sm text-slate-500">AI Email Generator</div>
+                      <div className="ml-4 text-sm text-slate-500">ColdSendr AI Generator</div>
                     </div>
                     
                     <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
                       <div className="flex items-center space-x-2 mb-3">
-                        <Mail className="w-4 h-4 text-blue-500" />
+                        <Send className="w-4 h-4 text-emerald-500" />
                         <span className="text-sm font-medium text-slate-700">Subject: Partnership Opportunity</span>
                       </div>
                       <div className="space-y-2">
                         <div className="h-2 bg-slate-200 rounded w-full"></div>
                         <div className="h-2 bg-slate-200 rounded w-4/5"></div>
-                        <div className="h-2 bg-blue-200 rounded w-3/5"></div>
+                        <div className="h-2 bg-emerald-200 rounded w-3/5"></div>
                       </div>
                     </div>
 
@@ -221,7 +219,7 @@ const LandingPage: React.FC = () => {
 
                     <div className="flex items-center justify-between pt-2">
                       <div className="flex items-center space-x-2">
-                        <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-violet-600 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-full flex items-center justify-center">
                           <Sparkles className="w-3 h-3 text-white" />
                         </div>
                         <span className="text-xs text-slate-600">AI Generated</span>
@@ -236,7 +234,7 @@ const LandingPage: React.FC = () => {
                   <TrendingUp className="w-8 h-8 text-white" />
                 </div>
                 
-                <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-gradient-to-r from-violet-400 to-pink-500 rounded-xl flex items-center justify-center shadow-lg animate-pulse">
+                <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-gradient-to-r from-blue-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg animate-pulse">
                   <Heart className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -247,7 +245,7 @@ const LandingPage: React.FC = () => {
           <div className="text-center mt-16">
             <Link
               to="/app"
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-emerald-500 to-blue-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <Rocket className="w-5 h-5 mr-2" />
               Try It Now - No Signup Required
@@ -261,13 +259,13 @@ const LandingPage: React.FC = () => {
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-50 to-violet-50 border border-blue-200/50 rounded-full mb-6">
-              <Award className="w-4 h-4 text-blue-500 mr-2" />
-              <span className="text-sm font-medium text-blue-700">Award-Winning Features</span>
+            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-50 to-blue-50 border border-emerald-200/50 rounded-full mb-6">
+              <Award className="w-4 h-4 text-emerald-500 mr-2" />
+              <span className="text-sm font-medium text-emerald-700">Award-Winning Features</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
               Everything you need to
-              <span className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent block">
+              <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent block">
                 close more deals
               </span>
             </h2>
@@ -278,9 +276,9 @@ const LandingPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             {/* Feature 1 */}
-            <div className="group bg-white rounded-2xl p-8 border border-slate-200 hover:border-blue-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm hover:shadow-xl">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl mb-6 group-hover:scale-110 transition-transform">
-                <Target className="w-8 h-8 text-blue-600" />
+            <div className="group bg-white rounded-2xl p-8 border border-slate-200 hover:border-emerald-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm hover:shadow-xl">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl mb-6 group-hover:scale-110 transition-transform">
+                <Target className="w-8 h-8 text-emerald-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-800 mb-4">7 Advanced Tones</h3>
               <p className="text-slate-600 leading-relaxed">
@@ -289,9 +287,9 @@ const LandingPage: React.FC = () => {
             </div>
 
             {/* Feature 2 */}
-            <div className="group bg-white rounded-2xl p-8 border border-slate-200 hover:border-violet-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm hover:shadow-xl">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-violet-100 to-violet-200 rounded-2xl mb-6 group-hover:scale-110 transition-transform">
-                <Lightbulb className="w-8 h-8 text-violet-600" />
+            <div className="group bg-white rounded-2xl p-8 border border-slate-200 hover:border-blue-300 transition-all duration-300 hover:transform hover:scale-105 shadow-sm hover:shadow-xl">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl mb-6 group-hover:scale-110 transition-transform">
+                <Lightbulb className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-800 mb-4">AI Icebreakers</h3>
               <p className="text-slate-600 leading-relaxed">
@@ -323,7 +321,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           {/* All Features Grid */}
-          <div className="bg-gradient-to-br from-blue-50 to-violet-50 rounded-3xl p-8 border border-blue-200/50">
+          <div className="bg-gradient-to-br from-emerald-50 to-blue-50 rounded-3xl p-8 border border-emerald-200/50">
             <div className="text-center mb-12">
               <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-100 to-blue-100 border border-emerald-200/50 rounded-full mb-4">
                 <Sparkles className="w-5 h-5 text-emerald-600 mr-2" />
@@ -337,19 +335,19 @@ const LandingPage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-white/50">
-                <History className="w-8 h-8 text-blue-500 mb-4" />
+                <History className="w-8 h-8 text-emerald-500 mb-4" />
                 <h4 className="text-lg font-bold text-slate-800 mb-2">Complete Email History</h4>
                 <p className="text-slate-600 text-sm">Access unlimited email history with advanced search, filtering, and export capabilities.</p>
               </div>
 
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-white/50">
-                <Eye className="w-8 h-8 text-emerald-500 mb-4" />
+                <Eye className="w-8 h-8 text-blue-500 mb-4" />
                 <h4 className="text-lg font-bold text-slate-800 mb-2">Email Preview</h4>
                 <p className="text-slate-600 text-sm">Preview your emails before generating to ensure perfect results every time.</p>
               </div>
 
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-white/50">
-                <MessageSquare className="w-8 h-8 text-violet-500 mb-4" />
+                <MessageSquare className="w-8 h-8 text-emerald-500 mb-4" />
                 <h4 className="text-lg font-bold text-slate-800 mb-2">Smart Follow-ups</h4>
                 <p className="text-slate-600 text-sm">Automatically generate perfectly timed follow-up emails that maintain engagement.</p>
               </div>
@@ -390,13 +388,13 @@ const LandingPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             {/* Connection lines for desktop */}
-            <div className="hidden md:block absolute top-1/2 left-1/3 right-1/3 h-0.5 bg-gradient-to-r from-blue-300 to-violet-300 transform -translate-y-1/2"></div>
+            <div className="hidden md:block absolute top-1/2 left-1/3 right-1/3 h-0.5 bg-gradient-to-r from-emerald-300 to-blue-300 transform -translate-y-1/2"></div>
 
             {/* Step 1 */}
             <div className="text-center group">
-              <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full mb-6 group-hover:scale-110 transition-transform shadow-lg">
+              <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full mb-6 group-hover:scale-110 transition-transform shadow-lg">
                 <span className="text-2xl font-bold text-white">1</span>
-                <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full opacity-20 animate-ping"></div>
+                <div className="absolute -inset-2 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full opacity-20 animate-ping"></div>
               </div>
               <h3 className="text-xl font-bold text-slate-800 mb-4">Fill the Form</h3>
               <p className="text-slate-600 leading-relaxed">
@@ -406,9 +404,9 @@ const LandingPage: React.FC = () => {
 
             {/* Step 2 */}
             <div className="text-center group">
-              <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-violet-500 to-violet-600 rounded-full mb-6 group-hover:scale-110 transition-transform shadow-lg">
+              <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full mb-6 group-hover:scale-110 transition-transform shadow-lg">
                 <span className="text-2xl font-bold text-white">2</span>
-                <div className="absolute -inset-2 bg-gradient-to-r from-violet-400 to-violet-500 rounded-full opacity-20 animate-ping delay-500"></div>
+                <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full opacity-20 animate-ping delay-500"></div>
               </div>
               <h3 className="text-xl font-bold text-slate-800 mb-4">AI Generation</h3>
               <p className="text-slate-600 leading-relaxed">
@@ -432,7 +430,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-emerald-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
@@ -450,10 +448,10 @@ const LandingPage: React.FC = () => {
                 ))}
               </div>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                "ColdSpark increased my response rate by 300%. The AI icebreakers are game-changing - they feel so personal and natural!"
+                "ColdSendr increased my response rate by 300%. The AI icebreakers are game-changing - they feel so personal and natural!"
               </p>
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-violet-600 rounded-full flex items-center justify-center mr-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-full flex items-center justify-center mr-4">
                   <span className="text-white font-bold">JS</span>
                 </div>
                 <div>
@@ -492,7 +490,7 @@ const LandingPage: React.FC = () => {
                 ))}
               </div>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                "I save hours every week with ColdSpark. The personalized icebreakers make my emails stand out from the crowd."
+                "I save hours every week with ColdSendr. The personalized icebreakers make my emails stand out from the crowd."
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-pink-500 rounded-full flex items-center justify-center mr-4">
@@ -509,19 +507,19 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 to-violet-700">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-emerald-600 to-blue-700">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to transform your outreach?
           </h2>
-          <p className="text-xl text-blue-100 mb-12">
-            Join thousands of professionals who are already closing more deals with ColdSpark
+          <p className="text-xl text-emerald-100 mb-12">
+            Join thousands of professionals who are already closing more deals with ColdSendr
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/app"
-              className="group flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="group flex items-center justify-center px-8 py-4 bg-white text-emerald-600 font-bold rounded-xl hover:bg-emerald-50 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <Rocket className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
               Start Free Today
@@ -529,7 +527,7 @@ const LandingPage: React.FC = () => {
             </Link>
           </div>
 
-          <p className="text-blue-200 text-sm mt-6">No credit card required • Free forever • Setup in 30 seconds</p>
+          <p className="text-emerald-200 text-sm mt-6">No credit card required • Free forever • Setup in 30 seconds</p>
         </div>
       </section>
 
@@ -540,12 +538,10 @@ const LandingPage: React.FC = () => {
             {/* Brand */}
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
-                <img
-                  src="/508396209_1062706966037301_4833881911616339195_n.webp"
-                  alt="ColdSpark Logo"
-                  className="w-10 h-10 rounded-xl"
-                />
-                <span className="text-xl font-bold text-white">ColdSpark</span>
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-xl flex items-center justify-center">
+                  <Send className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xl font-bold text-white">ColdSendr</span>
               </div>
               <p className="text-slate-400 max-w-md">
                 Transform your cold outreach with AI-powered personalization. Generate emails that actually get replies.
@@ -590,7 +586,7 @@ const LandingPage: React.FC = () => {
           
           <div className="pt-8 border-t border-slate-700 flex flex-col md:flex-row items-center justify-between">
             <p className="text-slate-400 text-sm mb-4 md:mb-0">
-              © 2025 ColdSpark. Built with ❤️ for the World's Largest Hackathon.
+              © 2025 ColdSendr. Built with ❤️ for the World's Largest Hackathon.
             </p>
             
             <div className="flex items-center space-x-2">

@@ -39,14 +39,14 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-blue-100">
       <Header />
       <div className="flex items-center justify-center px-4 py-20">
         <div className="max-w-md w-full">
-          <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-8 border border-blue-100/50 shadow-2xl">
+          <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-8 border border-emerald-100/50 shadow-2xl">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
-              <p className="text-slate-600">Sign in to your account</p>
+              <p className="text-slate-600">Sign in to your ColdSendr account</p>
             </div>
 
             {error && (
@@ -63,7 +63,7 @@ const LoginForm: React.FC = () => {
             {/* Divider */}
             <div className="relative mb-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-blue-200/50"></div>
+                <div className="w-full border-t border-emerald-200/50"></div>
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-white text-slate-500">Or continue with email</span>
@@ -84,7 +84,7 @@ const LoginForm: React.FC = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 bg-white/80 border border-blue-200/50 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                    className="w-full pl-10 pr-4 py-3 bg-white/80 border border-emerald-200/50 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -103,7 +103,7 @@ const LoginForm: React.FC = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    className="w-full pl-10 pr-12 py-3 bg-white/80 border border-blue-200/50 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                    className="w-full pl-10 pr-12 py-3 bg-white/80 border border-emerald-200/50 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
                     placeholder="Enter your password"
                   />
                   <button
@@ -119,7 +119,7 @@ const LoginForm: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full flex items-center justify-center px-8 py-3 bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-semibold rounded-lg hover:from-emerald-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {loading ? (
                   <>
@@ -135,7 +135,7 @@ const LoginForm: React.FC = () => {
             <div className="mt-6 text-center">
               <p className="text-slate-600">
                 Don't have an account?{' '}
-                <Link to="/signup" className="text-purple-600 hover:text-purple-500 font-medium transition-colors">
+                <Link to="/signup" className="text-emerald-600 hover:text-emerald-500 font-medium transition-colors">
                   Sign up
                 </Link>
               </p>
