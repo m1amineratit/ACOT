@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Github, Sparkles } from 'lucide-react';
+import { Heart, Github, Sparkles, Zap } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -17,6 +17,22 @@ const Footer: React.FC = () => {
           <p className="text-purple-300 font-medium">
             100% Free - All Premium Features Included
           </p>
+        </div>
+        
+        {/* Built with Bolt Badge */}
+        <div className="flex items-center justify-center mb-6">
+          <a
+            href="https://bolt.new"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-sm rounded-xl border border-yellow-500/30 text-yellow-300 hover:text-yellow-200 hover:bg-gradient-to-r hover:from-yellow-500/30 hover:to-orange-500/30 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            <Zap className="w-5 h-5 mr-2 text-yellow-400 group-hover:animate-pulse" />
+            <span className="font-semibold">Built with Bolt</span>
+            <div className="ml-2 px-2 py-1 bg-yellow-500/20 rounded-full border border-yellow-500/40">
+              <span className="text-yellow-300 text-xs font-bold">AI</span>
+            </div>
+          </a>
         </div>
         
         <div className="flex justify-center space-x-6">

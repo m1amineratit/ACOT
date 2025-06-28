@@ -195,6 +195,18 @@ const LandingPage: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* Try It Now CTA */}
+          <div className="text-center mt-16">
+            <Link
+              to="/app"
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              <Rocket className="w-5 h-5 mr-2" />
+              Try It Now - No Signup Required
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -369,18 +381,6 @@ const LandingPage: React.FC = () => {
               </p>
             </div>
           </div>
-
-          {/* Try It Now CTA */}
-          <div className="text-center mt-16">
-            <Link
-              to="/app"
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              <Rocket className="w-5 h-5 mr-2" />
-              Try It Now - No Signup Required
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -523,6 +523,22 @@ const LandingPage: React.FC = () => {
                 <li><Link to="/app" className="text-slate-400 hover:text-white transition-colors">Try Free</Link></li>
               </ul>
             </div>
+          </div>
+          
+          {/* Built with Bolt Badge */}
+          <div className="flex items-center justify-center mb-6">
+            <a
+              href="https://bolt.new"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-sm rounded-xl border border-yellow-500/30 text-yellow-300 hover:text-yellow-200 hover:bg-gradient-to-r hover:from-yellow-500/30 hover:to-orange-500/30 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              <Zap className="w-5 h-5 mr-2 text-yellow-400 group-hover:animate-pulse" />
+              <span className="font-semibold">Built with Bolt</span>
+              <div className="ml-2 px-2 py-1 bg-yellow-500/20 rounded-full border border-yellow-500/40">
+                <span className="text-yellow-300 text-xs font-bold">AI</span>
+              </div>
+            </a>
           </div>
           
           <div className="pt-8 border-t border-slate-700 flex flex-col md:flex-row items-center justify-between">
