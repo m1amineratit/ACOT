@@ -59,7 +59,7 @@ const LandingPage: React.FC = () => {
 
             <div className="flex items-center space-x-3">
               <Link
-                to="/"
+                to="/app"
                 className="px-6 py-3 bg-gradient-to-r from-blue-500 to-violet-600 text-white rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl font-medium"
               >
                 Try ColdSpark Free
@@ -105,11 +105,11 @@ const LandingPage: React.FC = () => {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-slide-up delay-400">
                 <Link
-                  to="/"
+                  to="/app"
                   className="group flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-500 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   <Rocket className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
-                  Start Writing Better Emails
+                  Try It Now - No Signup Required
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <button className="group flex items-center justify-center px-8 py-4 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold rounded-xl hover:bg-white transition-all border border-slate-200 shadow-sm hover:shadow-md">
@@ -369,6 +369,18 @@ const LandingPage: React.FC = () => {
               </p>
             </div>
           </div>
+
+          {/* Try It Now CTA */}
+          <div className="text-center mt-16">
+            <Link
+              to="/app"
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-violet-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-violet-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              <Rocket className="w-5 h-5 mr-2" />
+              Try It Now - No Signup Required
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -461,7 +473,7 @@ const LandingPage: React.FC = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/"
+              to="/app"
               className="group flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <Rocket className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
@@ -499,7 +511,7 @@ const LandingPage: React.FC = () => {
               <ul className="space-y-2">
                 <li><a href="#features" className="text-slate-400 hover:text-white transition-colors">Features</a></li>
                 <li><a href="#how-it-works" className="text-slate-400 hover:text-white transition-colors">How it Works</a></li>
-                <li><Link to="/" className="text-slate-400 hover:text-white transition-colors">Get Started</Link></li>
+                <li><Link to="/app" className="text-slate-400 hover:text-white transition-colors">Get Started</Link></li>
               </ul>
             </div>
 
@@ -508,7 +520,7 @@ const LandingPage: React.FC = () => {
               <h4 className="text-white font-semibold mb-4">Company</h4>
               <ul className="space-y-2">
                 <li><a href="#testimonials" className="text-slate-400 hover:text-white transition-colors">Reviews</a></li>
-                <li><Link to="/" className="text-slate-400 hover:text-white transition-colors">Try Free</Link></li>
+                <li><Link to="/app" className="text-slate-400 hover:text-white transition-colors">Try Free</Link></li>
               </ul>
             </div>
           </div>

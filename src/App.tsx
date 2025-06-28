@@ -20,11 +20,11 @@ const AppRoutes: React.FC = () => {
 
   return (
     <Routes>
-      <Route path="/landing" element={<LandingPage />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/app" element={<DashboardPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
-      <Route path="/" element={<DashboardPage />} />
     </Routes>
   );
 };
